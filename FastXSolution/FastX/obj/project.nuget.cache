@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Uilmjj8uNsj6q+Uwu8/hysIhO2xg/bE2evi5pOcJnSZSS5tUatGBnLPTRHHOYVYii3XUpW/IqR9juB/LCI4UWw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\A C E R\\Desktop\\FastX - BusTicketBooking\\FastXSolution\\FastX\\FastX.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\A C E R\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\A C E R\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\A C E R\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\A C E R\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\A C E R\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\A C E R\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
