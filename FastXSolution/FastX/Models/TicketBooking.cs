@@ -9,12 +9,12 @@ namespace FastX.Models
         [Key]
         public int TicketBookingId { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("UserId")]
         public int UserId { get; set; }
         public User? User { get; set; }
 
         [ForeignKey("BusId")]
-        public int Id { get; set; }
+        public int BusId { get; set; }
         public Bus? Bus { get; set; }
 
         public int SeatsBooked { get; set; }

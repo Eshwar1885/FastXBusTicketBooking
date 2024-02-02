@@ -1,0 +1,7 @@
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.csproj.AssemblyReference.cache
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.AssemblyInfoInputs.cache
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.AssemblyInfo.cs
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.csproj.CoreCompileInputs.cache
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\A C E R\Desktop\FastX - BusTicketBooking\FastXSolution\FastX\obj\Debug\net6.0\FastX.MvcApplicationPartsAssemblyInfo.cache

@@ -16,13 +16,8 @@ namespace FastX.Models
         public int BusOperatorId { get; set; }
         public BusOperator? BusOperator { get; set; }
 
-        [ForeignKey("AmenityId")]
-        public int AmenityId { get; set; }
-        public ICollection<Amenities> Amenitiess { get; set; }
-
-        [ForeignKey("SeatDetailsId")]
-        public int SeatDetailsId { get; set; }
-        public SeatDetails SeatDetails { get; set; }
+        public ICollection<Amenities> AllAmenities { get; set; }
+        public ICollection<SeatDetails> Seats { get; set; }
 
     }
 }
