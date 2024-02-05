@@ -1,3 +1,6 @@
+using FastX.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace FastX
 {
     public class Program
@@ -13,7 +16,13 @@ namespace FastX
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<FastXContext>(opts =>
+            {
+                opts.UseSqlServer(builder.Configuration.GetConnectionString("fastx"));
+            });
+
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
