@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bookingpage.css">
+    <title>Booking page</title>
+</head>
+<body>
+<ul>
+    <!-- <img src="images\download3.jpg" alt="Bus Image"> -->
+    </ul>
+    <form class="booking-form" action="#" method="post" id="bookingForm">
+        <div class="elem-group">
+          <label for="name">Enter Your Name</label>
+          <input type="text" id="name" name="visitor_name" required>
+        </div>
+        <div class="elem-group">
+          <label for="email">Enter Your E-mail</label>
+          <input type="email" id="email" name="visitor_email" required>
+        </div>
+        <div class="elem-group">
+          <label for="phone">Enter Your Phone Number</label>
+          <input type="tel" id="phone" name="visitor_phone" required>
+        </div>
+
+        <div class="elem-group">
+            <label for="UPI">Enter Your UPI ID</label>
+            <input type="tel" id="upi id" name="visitor_upi id" required>
+          </div>
+
+        <div class="elem-group">
+          <label for="message">Feedback (Optional):</label>
+          <textarea id="message"></textarea>
+        </div>
+
+        <button type="submit">Confirm your Booking</button>
+      </form>
+
+      <script>
+        document.getElementById("bookingForm").addEventListener("submit", function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            // Redirect to the success page
+            window.location.href = "successpage.html";
+        });
+      </script>
+</body>
+</html>

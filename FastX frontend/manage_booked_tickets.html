@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Manage Booked Tickets</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      background-color: #dc3545;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .dashboard-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .dashboard-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .dashboard-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Manage Booked Tickets</h2>
+  <table>
+    <tr>
+      <th>Ticket ID</th>
+      <th>User ID</th>
+      <th>Route</th>
+      <th>Seat Number</th>
+      <th>Action</th>
+    </tr>
+    
+    <tr>
+      <td>1001</td>
+      <td>1</td>
+      <td>City A to City B</td>
+      <td>Seat 12</td>
+      <td><button>Refund</button></td>
+    </tr>
+    
+  </table>
+
+  <div class="dashboard-link">
+    <p>Go back to <a href="adminProfile.html">Admin Dashboard</a></p>
+  </div>
+</div>
+
+</body>
+</html>

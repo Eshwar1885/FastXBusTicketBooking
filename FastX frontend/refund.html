@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Operator - Manage Cancelled Tickets</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      background-color: #dc3545;
+      color: #fff;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c82333;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .view-tickets {
+      overflow-x: auto;
+    }
+
+    .dashboard-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .dashboard-link a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dashboard-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Manage Cancelled Tickets</h2>
+
+  <div class="section">
+    <h3>View Cancelled Tickets</h3>
+    <div class="view-tickets">
+      <table>
+        <tr>
+          <th>Ticket ID</th>
+          <th>User ID</th>
+          <th>Route</th>
+          <th>Seat Number</th>
+          <th>Action</th>
+        </tr>
+       
+        <tr>
+          <td>1001</td>
+          <td>1</td>
+          <td>City A to City B</td>
+          <td>Seat 12</td>
+          <td><button>Refund</button></td>
+        </tr>
+        <tr>
+          <td>101</td>
+          <td>1</td>
+          <td>City A to City B</td>
+          <td>Seat 12</td>
+          <td><button>Refund</button></td>
+        </tr>
+        <tr>
+          <td>103</td>
+          <td>1</td>
+          <td>City A to City B</td>
+          <td>Seat 12</td>
+          <td><button>Refund</button></td>
+        </tr>
+     
+      </table>
+    </div>
+  </div>
+
+  <div class="dashboard-link">
+    <p>Go back to <a href="busoperatorprofile.html">Bus Operator Dashboard</a></p>
+  </div>
+</div>
+
+</body>
+</html>
