@@ -24,5 +24,29 @@ namespace FastX.Controllers
             return addedRoutee;
         }
 
+
+
+        [HttpGet]
+        public async Task<List<Routee>> GetAll()
+        {
+            var routee = await _adminService.GetRouteeList();
+            return routee;
+        }
+
+        [Route("/GetRouteById")]
+        [HttpGet]
+        public async Task<Routee> GetById(int id)
+        {
+            var routee = await _adminService.GetRoutee(id);
+            return routee;
+        }
+
+        [HttpDelete]
+        public async Task<Routee> Delete(int id)
+        {
+            var routee = await _adminService.DeleteRoutee(id);
+            return routee;
+        }
+
     }
 }

@@ -32,15 +32,17 @@ namespace FastX
                 opts.UseSqlServer(builder.Configuration.GetConnectionString("fastx"));
             });
 
-            builder.Services.AddScoped<IRouteeService, RouteeService>();
-            builder.Services.AddScoped<IBusService, BusService>();
-            builder.Services.AddScoped<IPaymentService, PaymentService>();
-
 
             builder.Services.AddScoped<IRepository<int, Routee>, RouteeRepository>();
             builder.Services.AddScoped<IRepository<int, Bus>, BusRepository>();
             builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepository>();
+            //builder.Services.AddScoped<IRepository<string, User>, UserRepository>();
 
+
+            builder.Services.AddScoped<IRouteeService, RouteeService>();
+            builder.Services.AddScoped<IBusService, BusService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
+            //builder.Services.AddScoped<IUserService, UserService>();
 
 
 
