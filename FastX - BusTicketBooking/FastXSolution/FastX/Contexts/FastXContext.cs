@@ -21,7 +21,7 @@ namespace FastX.Contexts
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<BusAmenity> BusAmenities { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Routee> Routes { get; set; }
+        public DbSet<Routee> Routees { get; set; }
         public DbSet<RouteStop> RouteStops { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Stop> Stops { get; set; }

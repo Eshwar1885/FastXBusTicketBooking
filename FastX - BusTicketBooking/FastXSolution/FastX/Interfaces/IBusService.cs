@@ -4,7 +4,7 @@ namespace FastX.Interfaces
 {
     public interface IBusService
     {
-        public Task<Bus> AddBus(Bus Bus);
+        public Task<Bus> AddBus(Bus bus);
 
         public Task<List<Bus>> GetBusList();
         public Task<Bus> GetBus(int id);

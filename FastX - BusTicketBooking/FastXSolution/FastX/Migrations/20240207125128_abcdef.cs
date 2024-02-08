@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FastX.Migrations
 {
-    public partial class init : Migration
+    public partial class abcdef : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +51,7 @@ namespace FastX.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Routes",
+                name: "Routees",
                 columns: table => new
                 {
                     RouteId = table.Column<int>(type: "int", nullable: false)
@@ -63,7 +63,20 @@ namespace FastX.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Routes", x => x.RouteId);
+                    table.PrimaryKey("PK_Routees", x => x.RouteId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stops",
+                columns: table => new
+                {
+                    StopId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stops", x => x.StopId);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,23 +124,29 @@ namespace FastX.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stops",
+                name: "RouteStops",
                 columns: table => new
                 {
-                    StopId = table.Column<int>(type: "int", nullable: false)
+                    RouteStopId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RouteId = table.Column<int>(type: "int", nullable: false),
-                    RouteeRouteId = table.Column<int>(type: "int", nullable: true)
+                    StopId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stops", x => x.StopId);
+                    table.PrimaryKey("PK_RouteStops", x => x.RouteStopId);
                     table.ForeignKey(
-                        name: "FK_Stops_Routes_RouteeRouteId",
-                        column: x => x.RouteeRouteId,
-                        principalTable: "Routes",
-                        principalColumn: "RouteId");
+                        name: "FK_RouteStops_Routees_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "Routees",
+                        principalColumn: "RouteId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RouteStops_Stops_StopId",
+                        column: x => x.StopId,
+                        principalTable: "Stops",
+                        principalColumn: "StopId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,8 +160,7 @@ namespace FastX.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     BusId = table.Column<int>(type: "int", nullable: false),
-                    RouteId = table.Column<int>(type: "int", nullable: false),
-                    RouteeRouteId = table.Column<int>(type: "int", nullable: true)
+                    RouteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,10 +172,11 @@ namespace FastX.Migrations
                         principalColumn: "BusId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bookings_Routes_RouteeRouteId",
-                        column: x => x.RouteeRouteId,
-                        principalTable: "Routes",
-                        principalColumn: "RouteId");
+                        name: "FK_Bookings_Routees_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "Routees",
+                        principalColumn: "RouteId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Bookings_Users_UserId",
                         column: x => x.UserId,
@@ -214,32 +233,6 @@ namespace FastX.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RouteStops",
-                columns: table => new
-                {
-                    RouteStopId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RouteId = table.Column<int>(type: "int", nullable: false),
-                    StopId = table.Column<int>(type: "int", nullable: false),
-                    RouteeRouteId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RouteStops", x => x.RouteStopId);
-                    table.ForeignKey(
-                        name: "FK_RouteStops_Routes_RouteeRouteId",
-                        column: x => x.RouteeRouteId,
-                        principalTable: "Routes",
-                        principalColumn: "RouteId");
-                    table.ForeignKey(
-                        name: "FK_RouteStops_Stops_StopId",
-                        column: x => x.StopId,
-                        principalTable: "Stops",
-                        principalColumn: "StopId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -267,9 +260,8 @@ namespace FastX.Migrations
                     TicketId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookingId = table.Column<int>(type: "int", nullable: false),
-                    SeatNumber = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<float>(type: "real", nullable: true),
-                    SeatId = table.Column<int>(type: "int", nullable: true)
+                    SeatId = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -293,9 +285,9 @@ namespace FastX.Migrations
                 column: "BusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_RouteeRouteId",
+                name: "IX_Bookings_RouteId",
                 table: "Bookings",
-                column: "RouteeRouteId");
+                column: "RouteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_UserId",
@@ -323,9 +315,9 @@ namespace FastX.Migrations
                 column: "BookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RouteStops_RouteeRouteId",
+                name: "IX_RouteStops_RouteId",
                 table: "RouteStops",
-                column: "RouteeRouteId");
+                column: "RouteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RouteStops_StopId",
@@ -336,11 +328,6 @@ namespace FastX.Migrations
                 name: "IX_Seats_BusId",
                 table: "Seats",
                 column: "BusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stops_RouteeRouteId",
-                table: "Stops",
-                column: "RouteeRouteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_BookingId",
@@ -383,7 +370,7 @@ namespace FastX.Migrations
                 name: "Seats");
 
             migrationBuilder.DropTable(
-                name: "Routes");
+                name: "Routees");
 
             migrationBuilder.DropTable(
                 name: "Users");

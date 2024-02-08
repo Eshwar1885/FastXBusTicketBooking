@@ -10,14 +10,18 @@ namespace FastX.Models
         [ForeignKey("BookingId")]
         public int BookingId { get; set; }
 
-        [ForeignKey("SeatNumber")]
-        public int? SeatNumber { get; set; }
+
+
+        [ForeignKey("SeatId")]
+        public int? SeatId { get; set; }
+        public Seat? Seat { get; set; }
+
         public float? Price { get; set; }
         //public bool? IsConfirmed { get; set; }
 
         // Navigation Property
         public Booking? Booking { get; set; }
-        public Seat? Seat { get; set; }
+
 
     }
 

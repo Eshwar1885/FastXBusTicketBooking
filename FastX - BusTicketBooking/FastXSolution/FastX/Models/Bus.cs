@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FastX.Models
 {
@@ -28,6 +29,7 @@ namespace FastX.Models
 
         public ICollection<Booking>? Bookings { get; set; }
         public ICollection<Seat>? Seats { get; set; }
+
         public ICollection<BusAmenity>? BusAmenities { get; set; }
 
     }

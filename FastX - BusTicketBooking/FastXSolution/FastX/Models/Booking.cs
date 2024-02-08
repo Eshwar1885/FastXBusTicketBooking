@@ -25,9 +25,11 @@ namespace FastX.Models
         public Bus? Bus { get; set; }
 
 
-        [ForeignKey("RouteId")]
+
         public int RouteId { get; set; }
+        [ForeignKey("RouteId")]
         public Routee? Routee { get; set; }
+
 
         // Navigation Properties
         //[ForeignKey("PaymentId")]

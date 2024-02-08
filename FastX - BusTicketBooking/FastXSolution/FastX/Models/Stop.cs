@@ -8,11 +8,12 @@ namespace FastX.Models
         [Key]
         public int StopId { get; set; }
         public string? Name { get; set; }
+        public ICollection<RouteStop>? RouteStops { get; set; }
         //public string? Location { get; set; }
-        [ForeignKey("RouteId")]
-        public int RouteId { get; set; }
-        public Routee? Routee { get; set; }
+        //[ForeignKey("RouteId")]
+        //public int RouteId { get; set; }
+        //public Routee? Routee { get; set; }
 
-    }
+    }
 
 }

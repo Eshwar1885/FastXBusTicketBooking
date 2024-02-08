@@ -29,7 +29,7 @@ namespace FastX.Controllers
             return Bus;
         }
 
-        [Route("/GetById")]
+        [Route("/GetBusById")]
         [HttpGet]
         public async Task<Bus> GetById(int id)
         {

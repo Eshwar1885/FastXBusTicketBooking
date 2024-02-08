@@ -10,11 +10,9 @@ namespace FastX.Models
         public int RouteStopId { get; set; }
         [ForeignKey("RouteId")]
         public int RouteId { get; set; }
+        public Routee? Route { get; set; } // Navigation property for associated route
         [ForeignKey("StopId")]
         public int StopId { get; set; }
-
-        // Navigation Properties
-        public Routee? Routee { get; set; }
         public Stop? Stop { get; set; }
     }
 

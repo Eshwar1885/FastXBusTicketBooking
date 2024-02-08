@@ -4,6 +4,7 @@ using FastX.Models;
 using FastX.Repositories;
 using FastX.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace FastX
 {
@@ -12,6 +13,12 @@ namespace FastX
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddControllers().AddJsonOptions(opts =>
+            {
+                opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                opts.JsonSerializerOptions.WriteIndented = true;
+            });
 
             // Add services to the container.
 
@@ -27,9 +34,13 @@ namespace FastX
 
             builder.Services.AddScoped<IRouteeService, RouteeService>();
             builder.Services.AddScoped<IBusService, BusService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
+
 
             builder.Services.AddScoped<IRepository<int, Routee>, RouteeRepository>();
             builder.Services.AddScoped<IRepository<int, Bus>, BusRepository>();
+            builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepository>();
+
 
 
 
