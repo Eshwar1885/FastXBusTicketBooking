@@ -81,6 +81,11 @@ namespace FastX
             builder.Services.AddScoped<IRepository<int, BusOperator>, BusOperatorRepository>();
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
             builder.Services.AddScoped<IRepository<int, Ticket>, TicketRepository>();
+            builder.Services.AddScoped<IAmenityRepository<int, Amenity>, AmenityRepository>();
+
+
+
+
 
 
 
@@ -90,6 +95,10 @@ namespace FastX
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAllUserService, AllUserService>();
+            builder.Services.AddScoped<IBusOperatorService, BusOperatorService>();
+            builder.Services.AddScoped<IAmenityService, AmenityService>();
+
+
 
 
 

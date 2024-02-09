@@ -35,12 +35,16 @@ namespace FastX.Repositories
             var bus=buses.FirstOrDefault(e => e.BusId == key);
             if (bus != null)
                 return bus;
-            throw new NoSuchBusAvailableException();
+            throw new NoSuchBusException();
         }
 
         public async Task<List<Bus>> GetAsync()
         {
             var buses = _context.Buses.Include(e => e.BusAmenities).ToList();
+            if (buses == null)
+            {
+                throw new NoSuchBusException();
+            }
             return buses;
         }
 

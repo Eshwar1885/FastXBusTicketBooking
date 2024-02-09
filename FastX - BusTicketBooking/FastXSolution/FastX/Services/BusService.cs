@@ -14,18 +14,18 @@ namespace FastX.Services
             _repo = repo;
 
         }
-        public async Task<Bus> AddBus(Bus Bus)
+        public async Task<Bus> AddBus(Bus bus)
         {
-            Bus = await _repo.Add(Bus);
-            return Bus;
+            bus = await _repo.Add(bus);
+            return bus;
         }
         public async Task<Bus> DeleteBus(int id)
         {
-            var Bus = await GetBus(id);
-            if (Bus != null)
+            var bus = await GetBus(id);
+            if (bus != null)
             {
-                Bus = await _repo.Delete(id);
-                return Bus;
+                bus = await _repo.Delete(id);
+                return bus;
             }
             throw new NoSuchBusException();
 
@@ -33,14 +33,18 @@ namespace FastX.Services
 
         public async Task<Bus> GetBus(int id)
         {
-            var Bus = await _repo.GetAsync(id);
-            return Bus;
+            var bus = await _repo.GetAsync(id);
+            return bus;
 
         }
         public async Task<List<Bus>> GetBusList()
         {
-            var Bus = await _repo.GetAsync();
-            return Bus;
+            var bus = await _repo.GetAsync();
+            if (bus == null)
+            {
+                throw new NoSuchBusException();
+            }
+            return bus;
         }
 
 

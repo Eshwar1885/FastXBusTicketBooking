@@ -12,23 +12,23 @@ namespace FastX.Services
             _repo = repo;
 
         }
-        public async Task<Payment> AddPayment(Payment Payment)
+        public async Task<Payment> AddPayment(Payment payment)
         {
-            Payment = await _repo.Add(Payment);
-            return Payment;
+            payment = await _repo.Add(payment);
+            return payment;
         }
 
         public async Task<Payment> GetPaymentBy(int id)
         {
-            var Payment = await _repo.GetAsync(id);
-            return Payment;
+            var payment = await _repo.GetAsync(id);
+            return payment;
 
         }
 
         public async Task<List<Payment>> GetPaymentList()
         {
-            var Payment = await _repo.GetAsync();
-            return Payment;
+            var payment = await _repo.GetAsync();
+            return payment;
         }
     }
 }
