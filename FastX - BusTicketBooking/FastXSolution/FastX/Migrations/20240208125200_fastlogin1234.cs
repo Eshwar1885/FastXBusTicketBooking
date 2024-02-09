@@ -5,22 +5,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FastX.Migrations
 {
-    public partial class abcdef : Migration
+    public partial class fastlogin1234 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admins",
+                name: "AllUsers",
                 columns: table => new
                 {
-                    AdminId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Password = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Key = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admins", x => x.AdminId);
+                    table.PrimaryKey("PK_AllUsers", x => x.Username);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,20 +34,6 @@ namespace FastX.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Amenities", x => x.AmenityId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BusOperators",
-                columns: table => new
-                {
-                    BusOperatorId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BusOperators", x => x.BusOperatorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,46 +66,71 @@ namespace FastX.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    AdminId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.AdminId);
+                    table.ForeignKey(
+                        name: "FK_Admins_AllUsers_Username",
+                        column: x => x.Username,
+                        principalTable: "AllUsers",
+                        principalColumn: "Username",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BusOperators",
+                columns: table => new
+                {
+                    BusOperatorId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusOperators", x => x.BusOperatorId);
+                    table.ForeignKey(
+                        name: "FK_BusOperators_AllUsers_Username",
+                        column: x => x.Username,
+                        principalTable: "AllUsers",
+                        principalColumn: "Username",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Buses",
-                columns: table => new
-                {
-                    BusId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BusName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BusType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalSeats = table.Column<int>(type: "int", nullable: true),
-                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Destination = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    BusOperatorId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Buses", x => x.BusId);
                     table.ForeignKey(
-                        name: "FK_Buses_BusOperators_BusOperatorId",
-                        column: x => x.BusOperatorId,
-                        principalTable: "BusOperators",
-                        principalColumn: "BusOperatorId",
+                        name: "FK_Users_AllUsers_Username",
+                        column: x => x.Username,
+                        principalTable: "AllUsers",
+                        principalColumn: "Username",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -146,6 +157,33 @@ namespace FastX.Migrations
                         column: x => x.StopId,
                         principalTable: "Stops",
                         principalColumn: "StopId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Buses",
+                columns: table => new
+                {
+                    BusId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BusType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalSeats = table.Column<int>(type: "int", nullable: true),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Destination = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TravelDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BusOperatorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buses", x => x.BusId);
+                    table.ForeignKey(
+                        name: "FK_Buses_BusOperators_BusOperatorId",
+                        column: x => x.BusOperatorId,
+                        principalTable: "BusOperators",
+                        principalColumn: "BusOperatorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -182,7 +220,7 @@ namespace FastX.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,6 +318,12 @@ namespace FastX.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Admins_Username",
+                table: "Admins",
+                column: "Username",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bookings_BusId",
                 table: "Bookings",
                 column: "BusId");
@@ -310,6 +354,12 @@ namespace FastX.Migrations
                 column: "BusOperatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BusOperators_Username",
+                table: "BusOperators",
+                column: "Username",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_BookingId",
                 table: "Payments",
                 column: "BookingId");
@@ -338,6 +388,12 @@ namespace FastX.Migrations
                 name: "IX_Tickets_SeatId",
                 table: "Tickets",
                 column: "SeatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -380,6 +436,9 @@ namespace FastX.Migrations
 
             migrationBuilder.DropTable(
                 name: "BusOperators");
+
+            migrationBuilder.DropTable(
+                name: "AllUsers");
         }
     }
 }

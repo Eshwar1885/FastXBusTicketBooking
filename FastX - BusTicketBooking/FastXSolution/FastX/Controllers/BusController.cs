@@ -1,5 +1,6 @@
 ﻿using FastX.Interfaces;
 using FastX.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,6 @@ namespace FastX.Controllers
         {
             _adminService = adminService;
         }
-
         [HttpPost]
         public async Task<Bus> Post(Bus Bus)
         {
@@ -36,7 +36,7 @@ namespace FastX.Controllers
             var Bus = await _adminService.GetBus(id);
             return Bus;
         }
-
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<Bus> Delete(int id)
         {

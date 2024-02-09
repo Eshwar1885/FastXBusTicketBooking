@@ -30,17 +30,50 @@ namespace FastX.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"), 1L, 1);
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AdminId");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("FastX.Models.AllUser", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("Key")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("Password")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Username");
+
+                    b.ToTable("AllUsers");
                 });
 
             modelBuilder.Entity("FastX.Models.Amenity", b =>
@@ -128,6 +161,9 @@ namespace FastX.Migrations
                     b.Property<int?>("TotalSeats")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("TravelDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("BusId");
 
                     b.HasIndex("BusOperatorId");
@@ -166,13 +202,26 @@ namespace FastX.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusOperatorId"), 1L, 1);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("BusOperatorId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("BusOperators");
                 });
@@ -335,15 +384,27 @@ namespace FastX.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FastX.Models.Admin", b =>
+                {
+                    b.HasOne("FastX.Models.AllUser", "AllUser")
+                        .WithOne("Admin")
+                        .HasForeignKey("FastX.Models.Admin", "Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AllUser");
                 });
 
             modelBuilder.Entity("FastX.Models.Booking", b =>
@@ -363,7 +424,7 @@ namespace FastX.Migrations
                     b.HasOne("FastX.Models.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Bus");
@@ -387,7 +448,7 @@ namespace FastX.Migrations
             modelBuilder.Entity("FastX.Models.BusAmenity", b =>
                 {
                     b.HasOne("FastX.Models.Amenity", "Amenity")
-                        .WithMany()
+                        .WithMany("BusAmenities")
                         .HasForeignKey("AmenityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -401,6 +462,17 @@ namespace FastX.Migrations
                     b.Navigation("Amenity");
 
                     b.Navigation("Bus");
+                });
+
+            modelBuilder.Entity("FastX.Models.BusOperator", b =>
+                {
+                    b.HasOne("FastX.Models.AllUser", "AllUser")
+                        .WithOne("BusOperator")
+                        .HasForeignKey("FastX.Models.BusOperator", "Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AllUser");
                 });
 
             modelBuilder.Entity("FastX.Models.Payment", b =>
@@ -459,6 +531,31 @@ namespace FastX.Migrations
                     b.Navigation("Booking");
 
                     b.Navigation("Seat");
+                });
+
+            modelBuilder.Entity("FastX.Models.User", b =>
+                {
+                    b.HasOne("FastX.Models.AllUser", "AllUser")
+                        .WithOne("User")
+                        .HasForeignKey("FastX.Models.User", "Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AllUser");
+                });
+
+            modelBuilder.Entity("FastX.Models.AllUser", b =>
+                {
+                    b.Navigation("Admin");
+
+                    b.Navigation("BusOperator");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FastX.Models.Amenity", b =>
+                {
+                    b.Navigation("BusAmenities");
                 });
 
             modelBuilder.Entity("FastX.Models.Booking", b =>

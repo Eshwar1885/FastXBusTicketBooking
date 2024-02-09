@@ -14,6 +14,8 @@ namespace FastX.Models
         public int? TotalSeats { get; set; }
         public string? Origin { get; set; }
         public string? Destination { get; set; }
+        public DateTime? TravelDate { get; set; }
+
         public DateTime? ArrivalTime { get; set; }
 
         public DateTime? DepartureTime { get; set; }
@@ -31,6 +33,7 @@ namespace FastX.Models
         public ICollection<Seat>? Seats { get; set; }
 
         public ICollection<BusAmenity>? BusAmenities { get; set; }
+
 
     }
 }
