@@ -100,5 +100,39 @@ namespace FastX.Services
                 throw;
             }
         }
+
+
+
+
+        public async Task DeleteAmenityFromBus(int busId, string amenityName)
+        {
+            try
+            {
+                var bus = await _busRepository.GetAsync(busId);
+                if (bus == null)
+                {
+                    throw new NoSuchBusException();
+                }
+
+                var amenity = _repo.GetByName(amenityName);
+                if (amenity == null)
+                {
+                    throw new AmenitiesNotFoundException();
+                }
+
+                if (!_repo.Exists(busId, amenity.AmenityId))
+                {
+                    throw new AmenitiesNotFoundException();
+                }
+
+                _repo.RemoveBusAmenity(busId, amenityName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while deleting amenity from bus");
+                throw;
+            }
+        }
+
     }
 }

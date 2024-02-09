@@ -15,5 +15,6 @@ namespace FastX.Interfaces
         //----------------------------------
         bool Exists(int busId, int amenityId);
         void AddBusAmenity(BusAmenity busAmenity);
+        void RemoveBusAmenity(int busId, string amenityName);
     }
 }

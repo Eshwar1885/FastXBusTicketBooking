@@ -3,6 +3,7 @@ using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace FastX.Repositories
 {
@@ -83,6 +84,17 @@ namespace FastX.Repositories
             _context.Amenities.Add(amenity);
             _context.SaveChanges();
 
+        }
+
+
+        public void RemoveBusAmenity(int busId, string amenityName)
+        {
+            var busAmenity = _context.BusAmenities.FirstOrDefault(ba => ba.BusId == busId && ba.Amenity.Name == amenityName);
+            if (busAmenity != null)
+            {
+                _context.BusAmenities.Remove(busAmenity);
+                _context.SaveChanges();
+            }
         }
 
         //-------------------------
