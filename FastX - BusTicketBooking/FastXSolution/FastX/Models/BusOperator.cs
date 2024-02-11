@@ -19,4 +19,3 @@ namespace FastX.Models
         public ICollection<Bus>? Buses { get; set; }
     }
 }
-    

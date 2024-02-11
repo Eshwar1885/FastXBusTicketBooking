@@ -14,6 +14,8 @@ namespace FastX.Models
         //public float? TotalPrice { get; set; }
         public string? Status { get; set; }
 
+        public DateTime? BookedForWhichDate { get; set; }
+
         // Foreign Keys
         [ForeignKey("UserId")]
         public int UserId { get; set; }
@@ -26,15 +28,15 @@ namespace FastX.Models
 
 
 
-        public int RouteId { get; set; }
-        [ForeignKey("RouteId")]
-        public Routee? Routee { get; set; }
+        //public int RouteId { get; set; }
+        //[ForeignKey("RouteId")]
+        //public Routee? Routee { get; set; }
 
 
-        // Navigation Properties
-        //[ForeignKey("PaymentId")]
-        //public int PaymentId { get; set; }
-        //public Payment? Payments { get; set; }
+        //// Navigation Properties
+        ////[ForeignKey("PaymentId")]
+        ////public int PaymentId { get; set; }
+        ////public Payment? Payments { get; set; }
         public ICollection<Ticket>? Tickets { get; set; }
 
     }

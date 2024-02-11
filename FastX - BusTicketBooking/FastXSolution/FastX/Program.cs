@@ -84,12 +84,6 @@ namespace FastX
             builder.Services.AddScoped<IAmenityRepository<int, Amenity>, AmenityRepository>();
 
 
-
-
-
-
-
-
             builder.Services.AddScoped<IRouteeService, RouteeService>();
             builder.Services.AddScoped<IBusService, BusService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();

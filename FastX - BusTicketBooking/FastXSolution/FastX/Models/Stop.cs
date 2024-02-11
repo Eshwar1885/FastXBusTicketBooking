@@ -12,8 +12,8 @@ namespace FastX.Models
         //public string? Location { get; set; }
         //[ForeignKey("RouteId")]
         //public int RouteId { get; set; }
-        //public Routee? Routee { get; set; }
+        //public Routee? Routee { get; set; }
 
-    }
+    }
 
 }

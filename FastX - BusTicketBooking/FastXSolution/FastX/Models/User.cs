@@ -7,6 +7,7 @@ namespace FastX.Models
     {
         [Key]
         public int UserId { get; set; }
+        public string? Password { get; set; }
         public string? Name { get; set; }
         public string? Gender { get; set; }
         public string? ContactNumber { get; set; }
@@ -14,6 +15,7 @@ namespace FastX.Models
         public string Username { get; set; }
         [ForeignKey("Username")]
         public AllUser? AllUser { get; set; }
+
         // Navigation Property
         public ICollection<Booking>? Bookings { get; set; }
     }

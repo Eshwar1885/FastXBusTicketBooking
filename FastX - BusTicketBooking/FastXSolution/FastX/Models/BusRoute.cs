@@ -3,21 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FastX.Models
 {
-    public class Seat
+    public class BusRoute
     {
         [Key]
-        public int SeatId { get; set; }
-        public float SeatPrice { get; set; }
+        public int BusRouteId { get; set; }
+        [ForeignKey("RouteId")]
+        public int RouteId { get; set; }
+        public Routee? Route { get; set; } // Navigation property for associated route
         [ForeignKey("BusId")]
         public int BusId { get; set; }
         public Bus? Bus { get; set; }
-
-        public bool? IsAvailable { get; set; }
-
-        // Navigation Property
-        //public Booking? Booking { get; set; }
-
-
     }
-
 }

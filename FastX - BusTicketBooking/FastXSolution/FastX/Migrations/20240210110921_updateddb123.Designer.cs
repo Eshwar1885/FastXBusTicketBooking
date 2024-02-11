@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastX.Migrations
 {
     [DbContext(typeof(FastXContext))]
-    [Migration("20240208125200_fastlogin1234")]
-    partial class fastlogin1234
+    [Migration("20240210110921_updateddb123")]
+    partial class updateddb123
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,6 +102,9 @@ namespace FastX.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"), 1L, 1);
 
+                    b.Property<DateTime?>("BookedForWhichDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("BookingDate")
                         .HasColumnType("datetime2");
 
@@ -109,9 +112,6 @@ namespace FastX.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("NumberOfSeats")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RouteId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -123,8 +123,6 @@ namespace FastX.Migrations
                     b.HasKey("BookingId");
 
                     b.HasIndex("BusId");
-
-                    b.HasIndex("RouteId");
 
                     b.HasIndex("UserId");
 
@@ -139,9 +137,6 @@ namespace FastX.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusId"), 1L, 1);
 
-                    b.Property<DateTime?>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("BusName")
                         .HasColumnType("nvarchar(max)");
 
@@ -151,20 +146,8 @@ namespace FastX.Migrations
                     b.Property<string>("BusType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DepartureTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Destination")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Origin")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("TotalSeats")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("TravelDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("BusId");
 
@@ -228,6 +211,29 @@ namespace FastX.Migrations
                     b.ToTable("BusOperators");
                 });
 
+            modelBuilder.Entity("FastX.Models.BusRoute", b =>
+                {
+                    b.Property<int>("BusRouteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusRouteId"), 1L, 1);
+
+                    b.Property<int>("BusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RouteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BusRouteId");
+
+                    b.HasIndex("BusId");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("BusRoute");
+                });
+
             modelBuilder.Entity("FastX.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -269,8 +275,14 @@ namespace FastX.Migrations
                     b.Property<string>("Destination")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("JourneyStatus")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Origin")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TravelDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("RouteId");
 
@@ -386,6 +398,9 @@ namespace FastX.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -417,12 +432,6 @@ namespace FastX.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FastX.Models.Routee", "Routee")
-                        .WithMany("Bookings")
-                        .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FastX.Models.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
@@ -430,8 +439,6 @@ namespace FastX.Migrations
                         .IsRequired();
 
                     b.Navigation("Bus");
-
-                    b.Navigation("Routee");
 
                     b.Navigation("User");
                 });
@@ -475,6 +482,25 @@ namespace FastX.Migrations
                         .IsRequired();
 
                     b.Navigation("AllUser");
+                });
+
+            modelBuilder.Entity("FastX.Models.BusRoute", b =>
+                {
+                    b.HasOne("FastX.Models.Bus", "Bus")
+                        .WithMany("BusRoute")
+                        .HasForeignKey("BusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FastX.Models.Routee", "Route")
+                        .WithMany("BusRoute")
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bus");
+
+                    b.Navigation("Route");
                 });
 
             modelBuilder.Entity("FastX.Models.Payment", b =>
@@ -571,6 +597,8 @@ namespace FastX.Migrations
 
                     b.Navigation("BusAmenities");
 
+                    b.Navigation("BusRoute");
+
                     b.Navigation("Seats");
                 });
 
@@ -581,7 +609,7 @@ namespace FastX.Migrations
 
             modelBuilder.Entity("FastX.Models.Routee", b =>
                 {
-                    b.Navigation("Bookings");
+                    b.Navigation("BusRoute");
 
                     b.Navigation("RouteStops");
                 });

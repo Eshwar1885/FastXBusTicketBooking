@@ -22,10 +22,11 @@ namespace FastX.Controllers
             _amenityService = amenityService;
             _logger = logger;
         }
-        [Authorize(Roles = "busoperator")]
-        [Authorize(Roles = "admin")]
 
-        [HttpGet("{busOperatorId}/buses")]
+        [Authorize(Roles = "busoperator")]
+        //[Authorize(Roles = "admin")]
+
+        [HttpGet("GetBusForBusOperator")]
         public async Task<IActionResult> GetBusesByOperatorId(int busOperatorId)
         {
             try
@@ -55,15 +56,7 @@ namespace FastX.Controllers
         //This method will add Amenity directly to the Amenity table
 
 
-
-
-
-
-
-
-
-        //[Authorize(Roles = "busoperator")]
-        //[HttpPost("amenities")]
+        //[HttpPost("AddAmenitiesDirectlyToAmenitiesTable")]
         //public async Task<IActionResult> AddAmenity(Amenity amenity)
         //{
         //    try
@@ -79,14 +72,7 @@ namespace FastX.Controllers
         //}
 
 
-
-
-
         //This method will delete Amenity directly from the amenity table
-
-
-
-
 
         //[Authorize(Roles = "busoperator")]
         //[HttpDelete("amenities/{id}")]
@@ -135,8 +121,8 @@ namespace FastX.Controllers
         // POST: api/Bus/AddAmenity 
         //this adds Amenity when BusId and Amenity name is given
 
-
-        [HttpPost("AddAmenityForBus")]
+        [Authorize(Roles = "busoperator")] //this will add into busamenities table
+        [HttpPost("AddAmenityForBusByBusOperator")] 
         public async Task<IActionResult> AddAmenity(int busId, string amenityName)
         {
             try
@@ -162,8 +148,8 @@ namespace FastX.Controllers
         }
 
 
-
-        [HttpDelete("DeleteAmenityForBus")]
+        [Authorize(Roles = "busoperator")] //this will delete from busamenities table
+        [HttpDelete("DeleteAmenityForBusByBusOperator")]
         public async Task<IActionResult> DeleteAmenity(int busId, string amenityName)
         {
             try

@@ -1,6 +1,8 @@
 ﻿using FastX.Contexts;
+using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastX.Repositories
 {
@@ -24,14 +26,25 @@ namespace FastX.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<BusOperator>> GetAsync()
+        public async Task<List<BusOperator>> GetAsync()
         {
-            throw new NotImplementedException();
+            var busOperator =  await _context.BusOperators.ToListAsync();
+            if(busOperator!= null)
+            {
+                return busOperator;
+            }
+            throw new BusOperatorNotFoundException();
         }
 
-        public Task<BusOperator> GetAsync(int key)
+        public async Task<BusOperator> GetAsync(int key)
         {
-            throw new NotImplementedException();
+            var busOperators = await GetAsync();
+            var busOperator = busOperators.SingleOrDefault(u => u.BusOperatorId == key);
+            if (busOperator != null)
+            {
+                return busOperator;
+            }
+            throw new BusOperatorNotFoundException();
         }
 
         public Task<BusOperator> Update(BusOperator item)

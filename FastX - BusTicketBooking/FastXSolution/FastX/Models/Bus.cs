@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace FastX.Models
 {
@@ -12,14 +11,15 @@ namespace FastX.Models
 
         public string? BusType { get; set; }
         public int? TotalSeats { get; set; }
-        public string? Origin { get; set; }
-        public string? Destination { get; set; }
-        public DateTime? TravelDate { get; set; }
+        //public string? Origin { get; set; }
+        //public string? Destination { get; set; }
 
-        public DateTime? ArrivalTime { get; set; }
+        //public DateTime? TravelDate {  get; set; }
 
-        public DateTime? DepartureTime { get; set; }
-        //public decimal? Fare { get; set; }
+        //public DateTime? ArrivalTime { get; set; }
+
+        //public DateTime? DepartureTime { get; set; }
+        ////public decimal? Fare { get; set; }
 
         // Foreign Key
         [ForeignKey("BusOperatorId")]
@@ -29,11 +29,12 @@ namespace FastX.Models
         public BusOperator? BusOperator { get; set; }
         //public BusAmenity BusAmenities { get; set; }
 
+        //  public ICollection<Routee>? Routee { get; set; }
         public ICollection<Booking>? Bookings { get; set; }
         public ICollection<Seat>? Seats { get; set; }
-
         public ICollection<BusAmenity>? BusAmenities { get; set; }
 
+        public ICollection<BusRoute>? BusRoute { get; set; }
 
     }
 }

@@ -28,7 +28,7 @@ namespace FastX.Services
 
                 if (buses == null || !buses.Any())
                 {
-                    throw new BusOperatorNotFoundException($"No buses found for bus operator ID: {busOperatorId}");
+                    throw new BusOperatorNotFoundException();
                 }
 
                 return buses.Select(b => new BusDTOForOperator
