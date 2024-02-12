@@ -18,14 +18,12 @@ namespace FastX.Services
             _logger = logger;
         }
 
-       
-
         public async Task<List<BusDTOForOperator>> GetAllBuses(int busOperatorId)
         {
             try
             {
                 var allBuses = await _busRepository.GetAsync();
-                var buses= allBuses.Where(b => b.BusOperatorId == busOperatorId);
+                var buses = allBuses.Where(b => b.BusOperatorId == busOperatorId);
                 //var buses = await _busRepository.GetAsync(b => b.BusOperatorId == busOperatorId);
 
                 if (buses == null || !buses.Any())
@@ -48,6 +46,9 @@ namespace FastX.Services
             }
         }
 
+    }
+}
+
         ////--------------- delete bus op and user by admin
         //public async Task DeleteBusOperatorAsync(string username)
         //{
@@ -68,5 +69,3 @@ namespace FastX.Services
         //        await _adminRepository.SaveChangesAsync();
         //    }
         //}
-    }
-}

@@ -31,7 +31,7 @@ namespace FastX.Models
         //public bool? IsConfirmed { get; set; }
 
         // Navigation Property
-        public Booking? Booking { get; set; }
+        public Booking Booking { get; set; }
 
 
     }

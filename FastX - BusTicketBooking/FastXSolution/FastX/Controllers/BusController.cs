@@ -1,6 +1,7 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
+using FastX.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,51 +10,17 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BusController : Controller
+    public class BusController : ControllerBase
     {
         private readonly IBusService _busService;
         private readonly ILogger<BusController> _logger;
 
-        public BusController(IBusService busService, ILogger<BusController> logger)
+        public BusController(IBusService busService,
+            ILogger<BusController> logger)
         {
             _busService = busService;
             _logger = logger;
         }
-
-        //[Authorize(Roles = "busoperator")]
-        //[HttpPost]
-        //public async Task<Bus> Post(Bus Bus)
-        //{
-        //    var addedBus = await _adminService.AddBus(Bus);
-        //    return addedBus;
-        //}
-
-        //[HttpGet]
-        //public async Task<List<Bus>> GetAll()
-        //    var Bus = await _busService.GetBusList();
-        //   return Bus;
-        //}
-
-        //[Route("/GetBusById")]
-        //[HttpGet]
-        //public async Task<Bus> GetById(int id)
-        //{
-        //    var Bus = await _adminService.GetBus(id);
-        //    return Bus;
-        //}
-
-
-        //[Authorize(Roles = "admin")]
-        //[Authorize(Roles = "busoperator")]
-        //[HttpDelete]
-        //public async Task<Bus> Delete(int id)
-        //{
-        //    var Bus = await _adminService.DeleteBus(id);
-        //    return Bus;
-        //}
-
-
-        //-------------------------------
 
         [Authorize(Roles = "busoperator")]
         [HttpPost("AddBusByBusOperator")]
@@ -75,8 +42,6 @@ namespace FastX.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
-        //--------------------------------
 
         [Authorize(Roles = "busoperator")]
         [HttpDelete("DeleteBusByBusOperator")]
@@ -104,6 +69,71 @@ namespace FastX.Controllers
         }
 
 
+        [HttpGet("search")]
+
+        public async Task<ActionResult<List<BusDTOForUser>>> SearchBusesAsync(string origin, string destination, DateTime date, string busType)
+        {
+            try
+            {
+                var availableBuses = await _busService.GetAvailableBuses(origin, destination, date);
+                _logger.LogInformation("Successfully retrieved available buses.");
+
+                return Ok(availableBuses);
+            }
+
+            catch (BusNotFoundException ex)
+            {
+                _logger.LogError($"BusNotFoundException: {ex.Message}");
+                return NotFound(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        //[HttpGet("search")]
+
+        //public async Task<ActionResult<List<BusDtoForUser>>> SearchBusesAsync(string origin, string destination, DateTime date)
+        //{
+        //    try
+        //    {
+        //        var busDtos = await _busService.SearchBusesAsync(origin, destination, date);
+        //        return Ok(busDtos);
+        //    }
+        //    catch (BusNotFoundException ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception for debugging purposes
+        //        Console.WriteLine(ex.Message);
+        //        return StatusCode(500, "An error occurred while processing your request.");
+        //    }
+        //}
+        //[HttpGet("searchWithBusType")]
+
+        //public async Task<ActionResult<List<BusDtoForUser>>> SearchBusesAsync(string origin, string destination, DateTime date,string busType)
+        //{
+        //    try
+        //    {
+        //        var busDtos = await _busService.SearchBusesAsync(origin, destination, date,busType);
+        //        return Ok(busDtos);
+        //    }
+        //    catch (BusNotFoundException ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception for debugging purposes
+        //        Console.WriteLine(ex.Message);
+        //        return StatusCode(500, "An error occurred while processing your request.");
+        //    }
+        //}
 
 
 

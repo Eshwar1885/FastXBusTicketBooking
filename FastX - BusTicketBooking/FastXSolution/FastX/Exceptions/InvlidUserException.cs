@@ -1,7 +1,7 @@
 ﻿namespace FastX.Exceptions
 {
     [Serializable]
-    internal class InvlidUserException : Exception
+    public class InvlidUserException : Exception
     {
         string message;
         public InvlidUserException()

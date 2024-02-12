@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FastX.Repositories
 {
-    public class PaymentRepository : IRepository<int,Payment>
+    public class PaymentRepository : IRepository<int, Payment>
     {
         private readonly FastXContext _context;
 
         public PaymentRepository(FastXContext context)
         {
-            _context=context;
+            _context = context;
         }
 
         public async Task<Payment> Add(Payment item)
@@ -49,4 +49,3 @@ namespace FastX.Repositories
         }
     }
 }
-

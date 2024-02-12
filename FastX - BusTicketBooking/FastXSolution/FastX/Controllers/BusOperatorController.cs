@@ -48,8 +48,18 @@ namespace FastX.Controllers
         }
 
 
+
+
+
+
+
+
+        //---------------------------
+        // POST: api/Bus/AddAmenity 
+        //this adds Amenity when BusId and Amenity name is given
+
         [Authorize(Roles = "busoperator")] //this will add into busamenities table
-        [HttpPost("AddAmenityForBusByBusOperator")] 
+        [HttpPost("AddAmenityForBusByBusOperator")]
         public async Task<IActionResult> AddAmenity(int busId, string amenityName)
         {
             try

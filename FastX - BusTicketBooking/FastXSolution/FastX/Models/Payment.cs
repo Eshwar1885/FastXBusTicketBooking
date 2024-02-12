@@ -9,8 +9,9 @@ namespace FastX.Models
         public int PaymentId { get; set; }
         [ForeignKey("BookingId")]
         public int BookingId { get; set; }
-        //paymnet status
+
         public float? Amount { get; set; }
+        public string? PaymentStatus { get; set; }
         public DateTime? PaymentDate { get; set; } = DateTime.Now;
 
         // Navigation Property

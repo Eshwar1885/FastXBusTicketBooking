@@ -5,20 +5,13 @@ namespace FastX.Exceptions
     [Serializable]
     internal class AmenityAlreadyExistsException : Exception
     {
+        string message;
         public AmenityAlreadyExistsException()
         {
+            message = "Amenity already exists for this bus";
         }
+        public override string Message => message;
 
-        public AmenityAlreadyExistsException(string? message) : base(message)
-        {
-        }
 
-        public AmenityAlreadyExistsException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected AmenityAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

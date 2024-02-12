@@ -7,19 +7,13 @@ namespace FastX.Models
     {
         [Key]
         public int BusId { get; set; }
+
+        [Required(ErrorMessage = "Busname is required")]
         public string? BusName { get; set; }
 
         public string? BusType { get; set; }
         public int? TotalSeats { get; set; }
-        //public string? Origin { get; set; }
-        //public string? Destination { get; set; }
 
-        //public DateTime? TravelDate {  get; set; }
-
-        //public DateTime? ArrivalTime { get; set; }
-
-        //public DateTime? DepartureTime { get; set; }
-        ////public decimal? Fare { get; set; }
 
         // Foreign Key
         [ForeignKey("BusOperatorId")]
@@ -27,9 +21,7 @@ namespace FastX.Models
 
         // Navigation Property
         public BusOperator? BusOperator { get; set; }
-        //public BusAmenity BusAmenities { get; set; }
 
-        //  public ICollection<Routee>? Routee { get; set; }
         public ICollection<Booking>? Bookings { get; set; }
         public ICollection<Seat>? Seats { get; set; }
         public ICollection<BusAmenity>? BusAmenities { get; set; }

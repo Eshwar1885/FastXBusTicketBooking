@@ -3,22 +3,14 @@
 namespace FastX.Exceptions
 {
     [Serializable]
-    internal class NoSuchUserException : Exception
+    public class NoSuchUserException : Exception
     {
+        string message;
         public NoSuchUserException()
         {
+            message = "No such user exists";
         }
+        public override string Message => message;
 
-        public NoSuchUserException(string? message) : base(message)
-        {
-        }
-
-        public NoSuchUserException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected NoSuchUserException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

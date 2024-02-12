@@ -40,6 +40,7 @@ namespace FastX.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -85,6 +86,7 @@ namespace FastX.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AmenityId"), 1L, 1);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AmenityId");
@@ -109,7 +111,7 @@ namespace FastX.Migrations
                     b.Property<int>("BusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NumberOfSeats")
+                    b.Property<int>("NumberOfSeats")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -136,6 +138,7 @@ namespace FastX.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusId"), 1L, 1);
 
                     b.Property<string>("BusName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BusOperatorId")
@@ -195,6 +198,7 @@ namespace FastX.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -252,6 +256,9 @@ namespace FastX.Migrations
                     b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PaymentId");
 
                     b.HasIndex("BookingId");
@@ -274,9 +281,11 @@ namespace FastX.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Destination")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Origin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TravelDate")
@@ -340,6 +349,7 @@ namespace FastX.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StopId"), 1L, 1);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StopId");
@@ -394,6 +404,7 @@ namespace FastX.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")

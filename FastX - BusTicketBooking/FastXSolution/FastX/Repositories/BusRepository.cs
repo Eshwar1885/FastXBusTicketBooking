@@ -14,43 +14,11 @@ namespace FastX.Repositories
         public BusRepository(FastXContext context, ILogger<BusRepository> logger)
         {
             _context = context;
-            _logger = logger;      // ???? logger added in repository
+            _logger = logger;
         }
 
 
-        //public async Task<Bus> Add(Bus item)
-        //{
-        //    _context.Add(item);
-        //    _context.SaveChanges();
-        //    return item;
-        //}
 
-        //public async Task<Bus> Delete(int key)
-        //{
-        //    var bus=await GetAsync(key);
-        //    _context?.Buses.Remove(bus);
-        //    _context.SaveChanges();
-        //    return bus;
-        //}
-
-        public async Task<Bus> GetAsync(int key)
-        {
-            var buses = await GetAsync();
-            var bus=buses.FirstOrDefault(e => e.BusId == key);
-            if (bus != null)
-                return bus;
-            throw new BusNotFoundException();
-        }
-
-        public async Task<List<Bus>> GetAsync()
-        {
-            var buses = _context.Buses.Include(e => e.BusAmenities).ToList();
-            if (buses == null)
-            {
-                throw new BusNotFoundException();
-            }
-            return buses;
-        }
 
         public async Task<Bus> Update(Bus item)
         {
@@ -81,7 +49,7 @@ namespace FastX.Repositories
             try
             {
                 var bus = await _context.Buses.FindAsync(busId);
-                if (bus == null) 
+                if (bus == null)
                 {
                     throw new BusNotFoundException();
                 }
@@ -97,6 +65,47 @@ namespace FastX.Repositories
                 throw; // Re-throw the exception for the caller to handle
             }
         }
+
+
+
+        //public async Task<List<Bus>> GetBusesByCriteriaAsync(string origin, string destination, DateTime date)
+        //{
+        //    // Perform the database query to get buses based on origin, destination, and date
+        //    return await _context.Buses
+        //        .Where(b => b.Origin == origin && b.Destination == destination)
+        //        // Add additional conditions based on your database schema
+        //        .ToListAsync();
+        //}
+
+        //public async Task<List<Bus>> GetBusesByCriteriaAsyncWithBusType(string origin, string destination, DateTime date, string busType)
+        //{
+        //    var buses= await _context.Buses
+        //        .Where(b => b.Origin == origin && b.Destination == destination&&b.BusType==busType).ToListAsync();
+        //    return buses;
+        //}
+
+        public async Task<Bus> GetAsync(int key)
+        {
+            var buses = await GetAsync();
+            var bus = await _context.Buses
+        .Include(b => b.Seats)
+        .FirstOrDefaultAsync(e => e.BusId == key);
+
+            if (bus != null)
+                return bus;
+            throw new BusNotFoundException();
+        }
+
+        public async Task<List<Bus>> GetAsync()
+        {
+            var buses = await _context.Buses.Include(b => b.BusRoute).ThenInclude(b => b.Route).ToListAsync();
+            if (buses == null)
+            {
+                throw new BusNotFoundException();
+            }
+            return buses;
+        }
+
 
 
     }

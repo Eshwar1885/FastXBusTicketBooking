@@ -21,6 +21,8 @@ namespace FastX.Repositories
             return item;
         }
 
+
+
         public Task<BusOperator> Delete(int key)
         {
             throw new NotImplementedException();
@@ -28,8 +30,8 @@ namespace FastX.Repositories
 
         public async Task<List<BusOperator>> GetAsync()
         {
-            var busOperator =  await _context.BusOperators.ToListAsync();
-            if(busOperator!= null)
+            var busOperator = await _context.BusOperators.ToListAsync();
+            if (busOperator != null)
             {
                 return busOperator;
             }

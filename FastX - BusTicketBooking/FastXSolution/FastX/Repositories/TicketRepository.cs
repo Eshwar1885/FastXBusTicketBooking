@@ -24,16 +24,25 @@ namespace FastX.Repositories
         public async Task<Ticket> Delete(int key)
         {
             var ticket = await GetAsync(key);
-            _context?.Tickets.Remove(ticket);
+            _context.Tickets.Remove(ticket);
             _context.SaveChanges();
             return ticket;
         }
 
+
         public async Task<List<Ticket>> GetAsync()
         {
-            var tickets = _context.Tickets.Include(e => e.Booking).ToList(); //
+            var tickets = await _context.Tickets.Include(e => e.Booking).ToListAsync();
+            //var tickets = _context.Tickets.ToList();
+
+            //if (tickets == null || tickets.Count == 0)
+            //{
+            //    throw new NoTicketsAvailableException();
+            //}
+
             return tickets;
         }
+
 
         public async Task<Ticket> GetAsync(int key)
         {
