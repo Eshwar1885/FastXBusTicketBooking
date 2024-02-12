@@ -1,15 +1,14 @@
 ﻿namespace FastX.Exceptions
 {
     [Serializable]
-    public class NoSuchBusException : Exception
+    public class UserAlreadyExistsException : Exception
     {
         string message;
-        public NoSuchBusException()
+        public UserAlreadyExistsException()
         {
-            message = "No such bus exists";
+            message = "User already exists";
         }
         public override string Message => message;
 
     }
-
 }

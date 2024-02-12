@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastX.Migrations
 {
     [DbContext(typeof(FastXContext))]
-    [Migration("20240210110921_updateddb123")]
-    partial class updateddb123
+    [Migration("20240211063725_updated1234")]
+    partial class updated1234
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -222,6 +222,9 @@ namespace FastX.Migrations
                     b.Property<int>("BusId")
                         .HasColumnType("int");
 
+                    b.Property<string>("JourneyStatus")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("RouteId")
                         .HasColumnType("int");
 
@@ -275,9 +278,6 @@ namespace FastX.Migrations
                     b.Property<string>("Destination")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("JourneyStatus")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Origin")
                         .HasColumnType("nvarchar(max)");
 
@@ -315,10 +315,7 @@ namespace FastX.Migrations
             modelBuilder.Entity("FastX.Models.Seat", b =>
                 {
                     b.Property<int>("SeatId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SeatId"), 1L, 1);
 
                     b.Property<int>("BusId")
                         .HasColumnType("int");
@@ -329,7 +326,7 @@ namespace FastX.Migrations
                     b.Property<float>("SeatPrice")
                         .HasColumnType("real");
 
-                    b.HasKey("SeatId");
+                    b.HasKey("SeatId", "BusId");
 
                     b.HasIndex("BusId");
 
@@ -363,17 +360,20 @@ namespace FastX.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
+                    b.Property<int>("BusId")
+                        .HasColumnType("int");
+
                     b.Property<float?>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("SeatId")
+                    b.Property<int>("SeatId")
                         .HasColumnType("int");
 
                     b.HasKey("TicketId");
 
                     b.HasIndex("BookingId");
 
-                    b.HasIndex("SeatId");
+                    b.HasIndex("SeatId", "BusId");
 
                     b.ToTable("Tickets");
                 });
@@ -554,7 +554,9 @@ namespace FastX.Migrations
 
                     b.HasOne("FastX.Models.Seat", "Seat")
                         .WithMany()
-                        .HasForeignKey("SeatId");
+                        .HasForeignKey("SeatId", "BusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Booking");
 

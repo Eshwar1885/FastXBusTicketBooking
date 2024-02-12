@@ -53,7 +53,7 @@ namespace FastX.Services
             var bus = await _busRepository.GetAsync();
             if (bus == null)
             {
-                throw new NoSuchBusException();
+                throw new BusNotFoundException();
             }
             return bus;
         }

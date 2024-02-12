@@ -77,7 +77,7 @@ namespace FastX.Services
                 var bus = await _busRepository.GetAsync(busId);
                 if (bus == null)
                 {
-                    throw new NoSuchBusException();
+                    throw new BusNotFoundException();
                 }
 
                 var amenity = _repo.GetByName(amenityName);
@@ -111,7 +111,7 @@ namespace FastX.Services
                 var bus = await _busRepository.GetAsync(busId);
                 if (bus == null)
                 {
-                    throw new NoSuchBusException();
+                    throw new BusNotFoundException();
                 }
 
                 var amenity = _repo.GetByName(amenityName);

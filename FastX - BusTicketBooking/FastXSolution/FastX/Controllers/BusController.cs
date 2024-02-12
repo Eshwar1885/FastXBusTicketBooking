@@ -90,7 +90,7 @@ namespace FastX.Controllers
                 else
                     return NotFound("Bus not found");
             }
-            catch (NoSuchBusException ex)
+            catch (BusNotFoundException ex)
             {
                 _logger.LogWarning(ex.Message);
                 return NotFound(ex.Message);

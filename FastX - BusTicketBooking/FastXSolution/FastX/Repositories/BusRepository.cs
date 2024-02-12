@@ -39,7 +39,7 @@ namespace FastX.Repositories
             var bus=buses.FirstOrDefault(e => e.BusId == key);
             if (bus != null)
                 return bus;
-            throw new NoSuchBusException();
+            throw new BusNotFoundException();
         }
 
         public async Task<List<Bus>> GetAsync()
@@ -47,7 +47,7 @@ namespace FastX.Repositories
             var buses = _context.Buses.Include(e => e.BusAmenities).ToList();
             if (buses == null)
             {
-                throw new NoSuchBusException();
+                throw new BusNotFoundException();
             }
             return buses;
         }
@@ -83,7 +83,7 @@ namespace FastX.Repositories
                 var bus = await _context.Buses.FindAsync(busId);
                 if (bus == null) 
                 {
-                    throw new NoSuchBusException();
+                    throw new BusNotFoundException();
                 }
                 _context.Buses.Remove(bus);
                 await _context.SaveChangesAsync();

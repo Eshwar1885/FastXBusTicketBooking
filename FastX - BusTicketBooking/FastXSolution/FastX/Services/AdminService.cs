@@ -6,23 +6,23 @@
 //{
 //    public class AdminService : IAdminService
 //    {
-//        private IRepository<int, Admin> _repo;
+//        private IAdminRepository<AllUser> _userRepository;
 //        private readonly ILogger<RouteeService> _logger;
 
-//        public AdminService(IRepository<int, Admin> repo, ILogger<RouteeService> logger)
+//        public AdminService(IAdminRepository<AllUser> userRepository, ILogger<RouteeService> logger)
 //        {
-//            _repo = repo;
+//            _userRepository = userRepository;
 //            _logger = logger;
 //        }
-//        public async Task<Admin> DeleteAdmin(string name)
+
+//        public async Task DeleteUserAsync(string username)
 //        {
-//            var admin = await GetRoutee(id);
-//            if (admin != null)
+//            var user = await _userRepository.GetByIdAsync(username);
+//            if (user != null)
 //            {
-//                admin = await _repo.Delete(name);
-//                return admin;
+//                _userRepository.DeleteAsync(username);
+//                await _userRepository.SaveChangesAsync();
 //            }
-//            throw new NoSuchRouteeException();
 //        }
 //    }
 //}

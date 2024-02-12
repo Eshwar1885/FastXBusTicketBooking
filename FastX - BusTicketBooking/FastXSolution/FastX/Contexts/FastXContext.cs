@@ -27,6 +27,7 @@ namespace FastX.Contexts
         public DbSet<Stop> Stops { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<AllUser> AllUsers { get; set; }
+        public DbSet<BusRoute> BusRoute { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
@@ -83,14 +84,26 @@ namespace FastX.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Seat>()
+            .HasKey(seat => new { seat.SeatId, seat.BusId });
+
+
+            modelBuilder.Entity<Ticket>()
+    .HasOne(ticket => ticket.Seat)
+    .WithMany()
+    .HasForeignKey(ticket => new { ticket.SeatId, ticket.BusId })
+    .OnDelete(DeleteBehavior.NoAction); // Remove cascade delete
+
+
 
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.User)
                 .WithMany(u => u!.Bookings)
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+            base.OnModelCreating(modelBuilder);
         }
+
 
     }
 }

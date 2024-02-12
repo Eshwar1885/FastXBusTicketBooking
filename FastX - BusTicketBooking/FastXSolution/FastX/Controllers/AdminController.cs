@@ -17,32 +17,37 @@
 
 //        private readonly ILogger<BusOperatorController> _logger;
 
-//        public AdminController(IBusOperatorService busOperatorService, ILogger<BusOperatorController> logger)
+//        public AdminController(IBusOperatorService busOperatorService, IAdminService adminService, ILogger<BusOperatorController> logger)
 //        {
 //            _busOperatorService = busOperatorService;
 //            _logger = logger;
+//            _adminService = adminService;
 //        }
-//        public async Task<IActionResult> DeleteAmenity(int busId, string amenityName)
+//        [HttpDelete("{username}")]
+//        public async Task<IActionResult> DeleteUser(string username)
 //        {
 //            try
 //            {
-//                await _amenityService.DeleteAmenityFromBus(busId, amenityName);
-//                return Ok("Amenity deleted successfully");
-//            }
-//            catch (NoSuchBusException ex)
-//            {
-//                _logger.LogError(ex, "Bus not found");
-//                return NotFound(ex.Message);
-//            }
-//            catch (AmenitiesNotFoundException ex)
-//            {
-//                _logger.LogError(ex, "Amenity not found");
-//                return NotFound(ex.Message);
+//                await _userService.DeleteUserAsync(username);
+//                return Ok();
 //            }
 //            catch (Exception ex)
 //            {
-//                _logger.LogError(ex, "An error occurred while deleting amenity from bus");
-//                return StatusCode(500, "Internal server error");
+//                return StatusCode(500, ex.Message);
+//            }
+//        }
+
+//        [HttpDelete("{username}")]
+//        public async Task<IActionResult> DeleteBusOperator(string username)
+//        {
+//            try
+//            {
+//                await _busOperatorService.DeleteBusOperatorAsync(username);
+//                return Ok();
+//            }
+//            catch (Exception ex)
+//            {
+//                return StatusCode(500, ex.Message);
 //            }
 //        }
 //    }

@@ -20,10 +20,28 @@ namespace FastX.Controllers
         }
         [Route("Register")]
         [HttpPost]
-        public async Task<LoginUserDTO> Register(RegisterUserDTO user)
+        public async Task<IActionResult> Register(RegisterUserDTO user)
         {
-            var result = await _allUserService.Register(user);
-            return result;
+            //--------------------------
+            try
+            {
+                var result = await _allUserService.Register(user);
+                return Ok(result);
+            }
+            catch (UserAlreadyExistsException due)
+            {
+                _logger.LogError(due, "user already exists");
+                return Conflict("Username already exists");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while registering");
+                return StatusCode(500, "An error occurred while registering user");
+            }
+            //---------------------------
+
+            //var result = await _allUserService.Register(user);     ////prev code
+            //return result;                                                //// prev code
         }
 
         [Route("Login")]

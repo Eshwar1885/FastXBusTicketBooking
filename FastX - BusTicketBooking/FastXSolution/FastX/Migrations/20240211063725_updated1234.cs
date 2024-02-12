@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FastX.Migrations
 {
-    public partial class updateddb123 : Migration
+    public partial class updated1234 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +45,6 @@ namespace FastX.Migrations
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Destination = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    JourneyStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TravelDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -247,6 +246,7 @@ namespace FastX.Migrations
                 {
                     BusRouteId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    JourneyStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RouteId = table.Column<int>(type: "int", nullable: false),
                     BusId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -271,15 +271,14 @@ namespace FastX.Migrations
                 name: "Seats",
                 columns: table => new
                 {
-                    SeatId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SeatPrice = table.Column<float>(type: "real", nullable: false),
+                    SeatId = table.Column<int>(type: "int", nullable: false),
                     BusId = table.Column<int>(type: "int", nullable: false),
+                    SeatPrice = table.Column<float>(type: "real", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seats", x => x.SeatId);
+                    table.PrimaryKey("PK_Seats", x => new { x.SeatId, x.BusId });
                     table.ForeignKey(
                         name: "FK_Seats_Buses_BusId",
                         column: x => x.BusId,
@@ -316,7 +315,8 @@ namespace FastX.Migrations
                     TicketId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookingId = table.Column<int>(type: "int", nullable: false),
-                    SeatId = table.Column<int>(type: "int", nullable: true),
+                    SeatId = table.Column<int>(type: "int", nullable: false),
+                    BusId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
@@ -329,10 +329,10 @@ namespace FastX.Migrations
                         principalColumn: "BookingId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_Seats_SeatId",
-                        column: x => x.SeatId,
+                        name: "FK_Tickets_Seats_SeatId_BusId",
+                        columns: x => new { x.SeatId, x.BusId },
                         principalTable: "Seats",
-                        principalColumn: "SeatId");
+                        principalColumns: new[] { "SeatId", "BusId" });
                 });
 
             migrationBuilder.CreateIndex(
@@ -408,9 +408,9 @@ namespace FastX.Migrations
                 column: "BookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_SeatId",
+                name: "IX_Tickets_SeatId_BusId",
                 table: "Tickets",
-                column: "SeatId");
+                columns: new[] { "SeatId", "BusId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",

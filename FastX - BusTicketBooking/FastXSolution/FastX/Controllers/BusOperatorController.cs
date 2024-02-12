@@ -48,79 +48,6 @@ namespace FastX.Controllers
         }
 
 
-
-
-
-
-
-        //This method will add Amenity directly to the Amenity table
-
-
-        //[HttpPost("AddAmenitiesDirectlyToAmenitiesTable")]
-        //public async Task<IActionResult> AddAmenity(Amenity amenity)
-        //{
-        //    try
-        //    {
-        //        var addedAmenity = await _amenityService.AddAmenity(amenity);
-        //        return Ok(addedAmenity);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred while adding amenity.");
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-        //    }
-        //}
-
-
-        //This method will delete Amenity directly from the amenity table
-
-        //[Authorize(Roles = "busoperator")]
-        //[HttpDelete("amenities/{id}")]
-        //public async Task<IActionResult> DeleteAmenity(int id)
-        //{
-        //    try
-        //    {
-        //        var deletedAmenity = await _amenityService.DeleteAmenity(id);
-        //        return Ok(deletedAmenity);
-        //    }
-        //    catch (AmenitiesNotFoundException ex)
-        //    {
-        //        _logger.LogWarning(ex.Message);
-        //        return NotFound(ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred while deleting amenity with ID: {AmenityId}", id);
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-        //    }
-        //}
-
-        //[Authorize(Roles = "busoperator")]
-        //[HttpPut("amenities")]
-        //public async Task<IActionResult> UpdateAmenity(int id, string name)
-        //{
-        //    try
-        //    {
-        //        var updatedAmenity = await _amenityService.ChangeAmenityNameAsync(id, name);
-        //        return Ok(updatedAmenity);
-        //    }
-        //    catch (AmenitiesNotFoundException ex)
-        //    {
-        //        _logger.LogWarning(ex.Message);
-        //        return NotFound(ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred while updating amenity.");
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-        //    }
-        //}
-
-
-        //---------------------------
-        // POST: api/Bus/AddAmenity 
-        //this adds Amenity when BusId and Amenity name is given
-
         [Authorize(Roles = "busoperator")] //this will add into busamenities table
         [HttpPost("AddAmenityForBusByBusOperator")] 
         public async Task<IActionResult> AddAmenity(int busId, string amenityName)
@@ -130,7 +57,7 @@ namespace FastX.Controllers
                 await _amenityService.AddAmenityToBus(busId, amenityName);
                 return Ok("Amenity added successfully");
             }
-            catch (NoSuchBusException ex)
+            catch (BusNotFoundException ex)
             {
                 _logger.LogError(ex, "Bus not found");
                 return NotFound(ex.Message);
@@ -157,7 +84,7 @@ namespace FastX.Controllers
                 await _amenityService.DeleteAmenityFromBus(busId, amenityName);
                 return Ok("Amenity deleted successfully");
             }
-            catch (NoSuchBusException ex)
+            catch (BusNotFoundException ex)
             {
                 _logger.LogError(ex, "Bus not found");
                 return NotFound(ex.Message);

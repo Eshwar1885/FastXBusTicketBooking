@@ -73,6 +73,9 @@ namespace FastX
             });
 
 
+
+            #region repositories and services
+
             builder.Services.AddScoped<IRepository<int, Routee>, RouteeRepository>();
             builder.Services.AddScoped<IRepository<int, Bus>, BusRepository>();
             builder.Services.AddScoped<IRepository<int, Payment>, PaymentRepository>();
@@ -80,6 +83,7 @@ namespace FastX
             builder.Services.AddScoped<IRepository<int, Admin>, AdminRepository>();
             builder.Services.AddScoped<IRepository<int, BusOperator>, BusOperatorRepository>();
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
+            //builder.Services.AddScoped<IRepository<int, Seat>, SeatRepository>();
             builder.Services.AddScoped<IRepository<int, Ticket>, TicketRepository>();
             builder.Services.AddScoped<IAmenityRepository<int, Amenity>, AmenityRepository>();
 
@@ -89,15 +93,10 @@ namespace FastX
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAllUserService, AllUserService>();
-            builder.Services.AddScoped<IBusOperatorService, BusOperatorService>();
+            //builder.Services.AddScoped<ISeatService, SeatService>();
             builder.Services.AddScoped<IAmenityService, AmenityService>();
-
-
-
-
-
-
-
+            builder.Services.AddScoped<IBusOperatorService, BusOperatorService>();
+            #endregion
 
             var app = builder.Build();
 

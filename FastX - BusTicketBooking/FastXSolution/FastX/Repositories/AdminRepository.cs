@@ -1,6 +1,7 @@
 ﻿using FastX.Contexts;
 using FastX.Interfaces;
 using FastX.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastX.Repositories
 {
@@ -23,6 +24,7 @@ namespace FastX.Repositories
         {
             throw new NotImplementedException();
         }
+        //----------------------------------
 
         //public async Task<Admin> Delete(int key)
         //{
@@ -38,6 +40,7 @@ namespace FastX.Repositories
         //    _context.SaveChanges();
         //    return admin;
         //}
+        //---------------------------------
 
         public Task<List<Admin>> GetAsync()
         {
@@ -58,4 +61,36 @@ namespace FastX.Repositories
             throw new NotImplementedException();
         }
     }
+
+
+
+
+    //public class AdminRepository<T> : IAdminRepository<T> where T : class
+    //{
+    //    private readonly DbContext _context;
+    //    private readonly DbSet<T> _dbSet;
+
+    //    public AdminRepository(DbContext context)
+    //    {
+    //        _context = context;
+    //        _dbSet = context.Set<T>();
+    //    }
+
+    //    public async Task<T> GetByIdAsync(object id)
+    //    {
+    //        return await _dbSet.FindAsync(id);
+    //    }
+
+    //    public async Task DeleteAsync(object id)
+    //    {
+    //        var entity = await _dbSet.FindAsync(id);
+    //        if (entity != null)
+    //            _dbSet.Remove(entity);
+    //    }
+
+    //    public async Task SaveChangesAsync()
+    //    {
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 }

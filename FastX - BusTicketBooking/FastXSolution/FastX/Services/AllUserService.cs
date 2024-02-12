@@ -14,8 +14,6 @@ namespace FastX.Services
         private readonly IRepository<int, User> _userRepository;
         private readonly IRepository<int, Admin> _adminRepository;
         private readonly IRepository<int, BusOperator> _busOperatorRepository;
-
-
         private readonly IRepository<string, AllUser> _alluserRepository;
         private readonly ITokenService _tokenService;
         private readonly ILogger<AllUserService> _logger;
@@ -24,7 +22,7 @@ namespace FastX.Services
                             IRepository<int, Admin> adminRepository,
                             IRepository<int, BusOperator> busOperatorRepository,
                             IRepository<string, AllUser> alluserRepository,
-        ITokenService tokenService,
+                            ITokenService tokenService,
                             ILogger<AllUserService> logger)
         {
             _userRepository = userRepository;
@@ -74,6 +72,13 @@ namespace FastX.Services
 
         public async Task<LoginUserDTO> Register(RegisterUserDTO user)
         {
+            //exception for dup reg
+            var existingUser = await _alluserRepository.GetAsync(user.Username);
+            if (existingUser != null)
+            {
+                throw new UserAlreadyExistsException();
+            }
+            //exc end
 
             AllUser myuser = new RegisterToAllUser(user).GetAllUser();
             myuser = await _alluserRepository.Add(myuser);
