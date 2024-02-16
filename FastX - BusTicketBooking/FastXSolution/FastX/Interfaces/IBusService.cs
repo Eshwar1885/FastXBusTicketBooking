@@ -13,7 +13,7 @@ namespace FastX.Interfaces
         public Task<List<BusDTOForUser>> GetAvailableBuses(string origin, string destination, DateTime travelDate);
 
         //Task<List<BusDtoForUser>> SearchBusesAsync(string origin, string destination, DateTime date);
-        //Task<List<BusDtoForUser>> SearchBusesAsync(string origin, string destination, DateTime date,string busType);
+        Task<List<BusDTOForUser>> GetAvailableBuses(string origin, string destination, DateTime date, string busType);
 
 
 

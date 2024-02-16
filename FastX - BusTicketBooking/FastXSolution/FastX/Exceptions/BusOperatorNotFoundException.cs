@@ -3,7 +3,7 @@
 namespace FastX.Exceptions
 {
     [Serializable]
-    internal class BusOperatorNotFoundException : Exception
+    public class BusOperatorNotFoundException : Exception
     {
         string message;
         public BusOperatorNotFoundException()

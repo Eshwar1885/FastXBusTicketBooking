@@ -1,4 +1,5 @@
 ﻿using FastX.Models;
+using FastX.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastX.Contexts
@@ -51,7 +52,32 @@ namespace FastX.Contexts
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);
+
+
+
+
+
+            ////Seeding data for testing purpose
+            //modelBuilder.Entity<RegisterUserDTO>().HasData(
+            //        new RegisterUserDTO { Username = "testuser", Password= "password",Role="user",Name="abc",ContactNumber="123"}
+            //        );
+
+
+            ////modelBuilder.Entity<Employee>().HasData(
+            ////    new Employee
+            ////    {
+            ////        Id=101,
+            ////        Name="Ramu",
+            ////        DateOfBirth=new DateTime(),
+            ////        Phone="9988776655",
+            ////        Email="ramu@gmail.com",
+            ////        Pic="./ramu.jpg",
+            ////        DepartmentId=1
+            ////    }
+            ////    );
         }
+
+
 
 
     }

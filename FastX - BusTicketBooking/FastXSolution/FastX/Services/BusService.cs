@@ -146,8 +146,57 @@ namespace FastX.Services
                 var availableBuses = buses
                     .Where(b => b.BusRoute != null && b.BusRoute.Any(r => r.Route != null && r.Route.Origin == origin &&
                                                       r.Route.Destination == destination &&
-                                                      r.Route.TravelDate == travelDate))
+                                                      r.Route.TravelDate == travelDate.Date))
                     .ToList();
+                _logger.LogInformation($"Origin: {origin}, Destination: {destination}, TravelDate: {travelDate}");
+                _logger.LogInformation($"Number of available buses: {availableBuses.Count}");
+                foreach (var bus in availableBuses)
+                {
+                    _logger.LogInformation($"Bus ID: {bus.BusId}, Bus Name: {bus.BusName}, Bus Type: {bus.BusType}");
+                }
+
+
+                if (!availableBuses.Any())
+                {
+                    throw new BusNotFoundException();
+                }
+                //_logger.LogInformation($"Origin: {origin}, Destination: {destination}, TravelDate: {travelDate}");
+                //_logger.LogInformation($"{availableBuses}");
+
+                return availableBuses.Select(bus => new BusDTOForUser
+                {
+                    BusId = bus.BusId,
+                    BusName = bus.BusName,
+                    BusType = bus.BusType,
+                    Origin = origin,
+                    Destination = destination
+                }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting available buses: {ex.Message}");
+                throw;
+            }
+        }
+
+
+
+        //--------------
+        public async Task<List<BusDTOForUser>> GetAvailableBuses(string origin, string destination, DateTime travelDate, string busType)
+        {
+            try
+            {
+                //to filter available buses based on origin, destination, and travel date
+                var buses = await _busRepository.GetAsync();
+                var availableBuses = buses.Where((b => b.BusType==busType && b.BusRoute != null && b.BusRoute.Any(r => r.Route != null && r.Route.Origin == origin &&
+                                                  r.Route.Destination == destination &&
+                                                  r.Route.TravelDate == travelDate.Date))).ToList();
+
+                //.Where(b => b.BusRoute != null && b.BusRoute.Any(r => r.Route != null && r.Route.Origin == origin &&
+                //                                  r.Route.Destination == destination &&
+                //                                  r.Route.TravelDate == travelDate.Date))
+                //.ToList();
                 _logger.LogInformation($"Origin: {origin}, Destination: {destination}, TravelDate: {travelDate}");
                 _logger.LogInformation($"Number of available buses: {availableBuses.Count}");
                 foreach (var bus in availableBuses)
@@ -209,13 +258,14 @@ namespace FastX.Services
         }
         public async Task<List<Bus>> GetBusList()
         {
-            var bus = await _busRepository.GetAsync();
-            if (bus == null)
+            var buses = await _busRepository.GetAsync();
+            if (buses == null || buses.Count == 0) // Check if the list is empty
             {
                 throw new BusNotFoundException();
             }
-            return bus;
+            return buses;
         }
+
     }
 }
 

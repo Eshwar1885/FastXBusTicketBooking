@@ -114,26 +114,26 @@ namespace FastX.Controllers
         //        return StatusCode(500, "An error occurred while processing your request.");
         //    }
         //}
-        //[HttpGet("searchWithBusType")]
+        [HttpGet("searchWithBusType")]
 
-        //public async Task<ActionResult<List<BusDtoForUser>>> SearchBusesAsync(string origin, string destination, DateTime date,string busType)
-        //{
-        //    try
-        //    {
-        //        var busDtos = await _busService.SearchBusesAsync(origin, destination, date,busType);
-        //        return Ok(busDtos);
-        //    }
-        //    catch (BusNotFoundException ex)
-        //    {
-        //        return NotFound(ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception for debugging purposes
-        //        Console.WriteLine(ex.Message);
-        //        return StatusCode(500, "An error occurred while processing your request.");
-        //    }
-        //}
+        public async Task<ActionResult<List<BusDTOForUser>>> SearchBusesWithTypeAsync(string origin, string destination, DateTime date, string busType)
+        {
+            try
+            {
+                var busDtos = await _busService.GetAvailableBuses(origin, destination, date, busType);
+                return Ok(busDtos);
+            }
+            catch (BusNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
 
 
 

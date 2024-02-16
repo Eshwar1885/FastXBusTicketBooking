@@ -3,7 +3,7 @@
 namespace FastX.Exceptions
 {
     [Serializable]
-    internal class NoSeatsAvailableException : Exception
+    public class NoSeatsAvailableException : Exception
     {
         string message;
         public NoSeatsAvailableException()

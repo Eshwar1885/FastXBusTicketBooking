@@ -132,9 +132,6 @@ namespace FastX.Services
             }
 
         }
-
-
-
         public async Task<bool> CheckWhetherSeatIsAvailableForBooking(int busId, int seatId, DateTime date)
         {
             try
@@ -158,9 +155,6 @@ namespace FastX.Services
                 _logger.LogInformation($"isTicketAvailable{isTicketAvailable}");
                 if (isTicketAvailable == true)
                 {
-
-
-
                     var isBookingComplete = tickets.Any(t => t.SeatId == seatId && t.BusId == busId &&
                                                  t.Booking != null &&
                                                  t.Booking.BusId == busId &&
@@ -172,7 +166,6 @@ namespace FastX.Services
                 }
                 else
                 {
-
                     return true;
                 }
             }
@@ -182,11 +175,6 @@ namespace FastX.Services
                 throw;
 
             }
-
-
-
-
-
         }
 
         public async Task<float> GetSeatPriceAsync(int seatId, int busId)

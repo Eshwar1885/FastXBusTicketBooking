@@ -30,7 +30,7 @@ namespace FastX.Repositories
 
         public async Task<List<Booking>> GetAsync()
         {
-            var bookings = await _context.Bookings.ToListAsync(); //
+            var bookings = await _context.Bookings.Include(t => t.Tickets).ToListAsync(); //
             return bookings;
         }
 

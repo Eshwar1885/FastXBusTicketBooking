@@ -1,4 +1,5 @@
 ﻿using FastX.Models;
+using FastX.Models.DTOs;
 
 namespace FastX.Interfaces
 {
@@ -8,6 +9,7 @@ namespace FastX.Interfaces
         public Task<List<Ticket>> GetTicketList();
         public Task<Ticket> GetTicket(int id);
         public Task<Ticket> DeleteTicket(int id);
+        public Task<List<TicketDTO>> GetTicketsForUser(int id );
 
     }
 }
