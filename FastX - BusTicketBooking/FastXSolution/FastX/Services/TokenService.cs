@@ -17,18 +17,40 @@ namespace FastX.Services
             _keyString = configuration["SecretKey"].ToString();
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keyString));
         }
-        public async Task<string> GenerateToken(LoginUserDTO user)
-        {
-            string token = string.Empty;
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.NameId,user.Username),
-                new Claim(ClaimTypes.Role,user.Role)
-            };
-            //Algorithm Signature with secret key
-            var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
+        //public async Task<string> GenerateToken(LoginUserInputDTO user)
+        //{
+        //    string token = string.Empty;
+        //    var claims = new List<Claim>
+        //    {
+        //        new Claim(JwtRegisteredClaimNames.NameId,user.Username),
+        //        new Claim(ClaimTypes.Role,user.Role)
+        //    };
+        //    //Algorithm Signature with secret key
+        //    var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
-            //Giving the token decription
+        //    //Giving the token decription
+        //    var tokenDescription = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(claims),
+        //        Expires = DateTime.Now.AddDays(1),
+        //        SigningCredentials = cred
+        //    };
+
+        //    //Putting the token together
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var myToken = tokenHandler.CreateToken(tokenDescription);
+        //    token = tokenHandler.WriteToken(myToken);
+        //    return token;
+        //}
+        public async Task<string> GenerateToken(string username, string role)
+        {
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.NameId, username),
+        new Claim(ClaimTypes.Role, role)
+    };
+
+            var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -36,11 +58,9 @@ namespace FastX.Services
                 SigningCredentials = cred
             };
 
-            //Putting the token together
             var tokenHandler = new JwtSecurityTokenHandler();
-            var myToken = tokenHandler.CreateToken(tokenDescription);
-            token = tokenHandler.WriteToken(myToken);
-            return token;
+            var token = tokenHandler.CreateToken(tokenDescription);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using FastX.Repositories;
 using FastX.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 namespace FastX.Services
 {
@@ -34,22 +35,51 @@ namespace FastX.Services
 
         }
 
-        public async Task<LoginUserDTO> Login(LoginUserDTO alluser)
+        //public async Task<LoginUserDTO> Login(LoginUserInputDTO alluser)
+        //{
+        //    var myUSer = await _alluserRepository.GetAsync(alluser.Username);
+        //    if (myUSer == null)
+        //    {
+        //        throw new InvlidUserException();
+        //    }
+        //    var userPassword = GetPasswordEncrypted(alluser.Password, myUSer.Key);
+        //    var checkPasswordMatch = ComparePasswords(myUSer.Password, userPassword);
+        //    //if (checkPasswordMatch)
+        //    //{
+        //    //    alluser.Password = "";
+        //    //    //alluser.Role = myUSer.Role;
+        //    //    alluser.Token = await _tokenService.GenerateToken(alluser);
+        //    //    return alluser;
+        //    //}
+        //    
+        //    throw new InvlidUserException();
+        //}
+        public async Task<LoginUserDTO> Login(LoginUserInputDTO userInput)
         {
-            var myUSer = await _alluserRepository.GetAsync(alluser.Username);
-            if (myUSer == null)
+            var myUser = await _alluserRepository.GetAsync(userInput.Username);
+            if (myUser == null)
             {
                 throw new InvlidUserException();
             }
-            var userPassword = GetPasswordEncrypted(alluser.Password, myUSer.Key);
-            var checkPasswordMatch = ComparePasswords(myUSer.Password, userPassword);
+
+            var userPassword = GetPasswordEncrypted(userInput.Password, myUser.Key);
+            var checkPasswordMatch = ComparePasswords(myUser.Password, userPassword);
+
             if (checkPasswordMatch)
             {
-                alluser.Password = "";
-                alluser.Role = myUSer.Role;
-                alluser.Token = await _tokenService.GenerateToken(alluser);
-                return alluser;
+                // Generate token
+                var token = await _tokenService.GenerateToken(userInput.Username, myUser.Role);
+
+                // Return output DTO
+                return new LoginUserDTO
+                {
+                    Username = userInput.Username,
+                    Role = myUser.Role,
+                    Token = token,
+                    // If you want to include the password, you can assign it here
+                };
             }
+
             throw new InvlidUserException();
         }
 

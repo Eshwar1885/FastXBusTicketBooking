@@ -66,6 +66,13 @@ namespace FastX
                         ValidateAudience = false
                     };
                 });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("ReactPolicy", opts =>
+                {
+                    opts.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                });
+            });
 
             builder.Services.AddDbContext<FastXContext>(opts =>
             {
@@ -119,6 +126,7 @@ namespace FastX
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 

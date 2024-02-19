@@ -1,6 +1,7 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models.DTOs;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,8 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
+
     public class AllUserController : ControllerBase
     {
         private readonly IAllUserService _allUserService;
@@ -46,7 +49,7 @@ namespace FastX.Controllers
 
         [Route("Login")]
         [HttpPost]
-        public async Task<ActionResult<LoginUserDTO>> Login(LoginUserDTO user)
+        public async Task<ActionResult<LoginUserDTO>> Login(LoginUserInputDTO user)
         {
             try
             {
