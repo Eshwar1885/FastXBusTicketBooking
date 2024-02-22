@@ -3,6 +3,7 @@ using FastX.Interfaces;
 using FastX.Models;
 using FastX.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
     public class BusController : ControllerBase
     {
         private readonly IBusService _busService;
@@ -22,7 +24,7 @@ namespace FastX.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "busoperator")]
+        //[Authorize(Roles = "busoperator")]
         [HttpPost("AddBusByBusOperator")]
         public async Task<IActionResult> AddBus(string busName, string busType, int totalSeats, int busOperatorId)
         {
@@ -43,7 +45,7 @@ namespace FastX.Controllers
             }
         }
 
-        [Authorize(Roles = "busoperator")]
+        //[Authorize(Roles = "busoperator")]
         [HttpDelete("DeleteBusByBusOperator")]
         public async Task<IActionResult> DeleteBus(int busId)
         {
@@ -69,13 +71,37 @@ namespace FastX.Controllers
         }
 
 
-        [HttpGet("search")]
+        //[HttpGet("search")]
+        //public async Task<ActionResult<List<BusDTOForUser>>> SearchBusesAsync(string origin, string destination, DateTime date)
+        //{
+        //    try
+        //    {
+        //        var availableBuses = await _busService.GetAvailableBuses(origin, destination, date);
+        //        _logger.LogInformation("Successfully retrieved available buses.");
 
-        public async Task<ActionResult<List<BusDTOForUser>>> SearchBusesAsync(string origin, string destination, DateTime date, string busType)
+        //        return Ok(availableBuses);
+        //    }
+
+        //    catch (BusNotFoundException ex)
+        //    {
+        //        _logger.LogError($"BusNotFoundException: {ex.Message}");
+        //        return NotFound(ex.Message);
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"An unexpected error occurred: {ex.Message}");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
+
+        //=========frnt end=====
+        [HttpGet("search")]
+        public async Task<ActionResult<List<BusDTOForUser>>> SearchBusesAsync([FromQuery] BusInputDTO bus)
         {
             try
             {
-                var availableBuses = await _busService.GetAvailableBuses(origin, destination, date);
+                var availableBuses = await _busService.GetAvailableBuses(bus.Origin, bus.Destination, bus.TravelDate);
                 _logger.LogInformation("Successfully retrieved available buses.");
 
                 return Ok(availableBuses);
@@ -93,6 +119,8 @@ namespace FastX.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+
 
         //[HttpGet("search")]
 
