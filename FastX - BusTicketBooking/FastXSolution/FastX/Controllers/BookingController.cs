@@ -1,6 +1,7 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;

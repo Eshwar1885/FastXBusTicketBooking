@@ -4,11 +4,13 @@ using FastX.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FastX.Exceptions;
+using Microsoft.AspNetCore.Cors;
 
 namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;

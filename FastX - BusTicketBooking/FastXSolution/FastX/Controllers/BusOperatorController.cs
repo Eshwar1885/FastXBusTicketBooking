@@ -3,6 +3,7 @@ using FastX.Interfaces;
 using FastX.Models;
 using FastX.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
     public class BusOperatorController : ControllerBase
     {
         private readonly IBusOperatorService _busOperatorService;

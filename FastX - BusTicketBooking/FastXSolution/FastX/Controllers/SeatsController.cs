@@ -1,5 +1,6 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
     public class SeatsController : ControllerBase
     {
         private readonly ISeatService _seatService;

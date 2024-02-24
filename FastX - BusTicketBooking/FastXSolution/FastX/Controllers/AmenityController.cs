@@ -2,6 +2,7 @@
 using FastX.Interfaces;
 using FastX.Models;
 using FastX.Models.DTOs;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace FastX.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("ReactPolicy")]
     public class AmenityController : ControllerBase
     {
 
