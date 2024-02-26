@@ -1,6 +1,7 @@
 ﻿using FastX.Contexts;
 using FastX.Interfaces;
 using FastX.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastX.Repositories
 {
@@ -24,10 +25,18 @@ namespace FastX.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetAsync()
+        public async Task<List<User>> GetAsync()
         {
-            throw new NotImplementedException();
+            var users = await _context.Users.ToListAsync();
+            return users;
         }
+
+        //public async Task<User> GetAsync(string key)
+        //{
+        //    var user = _context.Users.SingleOrDefault(u => u.Username == key);
+        //    return user;
+
+        //}
 
         public Task<User> GetAsync(int key)
         {

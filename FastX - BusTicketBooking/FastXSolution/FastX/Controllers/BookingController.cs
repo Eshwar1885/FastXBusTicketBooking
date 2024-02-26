@@ -27,13 +27,13 @@ namespace FastX.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MakeBooking(int busId, int seatId, DateTime travelDate, int userId)
+        public async Task<IActionResult> MakeBooking(int busId, int seatIds, DateTime travelDate, int userId, int totalSeats)
         {
             try
             {
-                _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
+                _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatIds: {string.Join(",", seatIds)}, TravelDate: {travelDate}, UserId: {userId}");
 
-                await _bookingService.MakeBooking(busId, seatId, travelDate, userId);
+                await _bookingService.MakeBooking(busId, seatIds, travelDate, userId, totalSeats);
 
                 _logger.LogInformation("Booking successful.");
                 return Ok();

@@ -84,9 +84,9 @@ namespace FastX.Services
 
         //}
 
-        public async Task ChangeSeatAvailablityAsync(int id)
+        public async Task ChangeSeatAvailablityAsync(int seatId, int busId)
         {
-            var seat = await _seatRepository.GetAsync(id);
+            var seat = await _seatRepository.GetAsync(busId, seatId);
             if (seat != null)
             {
                 seat.IsAvailable = false;

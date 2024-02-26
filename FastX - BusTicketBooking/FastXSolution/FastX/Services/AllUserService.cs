@@ -69,6 +69,9 @@ namespace FastX.Services
             {
                 // Generate token
                 var token = await _tokenService.GenerateToken(userInput.Username, myUser.Role);
+                var users = await _userRepository.GetAsync();
+                var filteredUsers = users.Where(u => u.Username == userInput.Username).ToList();
+                var userIds = filteredUsers.Select(u => u.UserId).ToList();
 
                 // Return output DTO
                 return new LoginUserDTO
@@ -76,6 +79,7 @@ namespace FastX.Services
                     Username = userInput.Username,
                     Role = myUser.Role,
                     Token = token,
+                    UserId = userIds[0],
                     // If you want to include the password, you can assign it here
                 };
             }

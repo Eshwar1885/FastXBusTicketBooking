@@ -2,6 +2,7 @@
 using FastX.Interfaces;
 using FastX.Models;
 using FastX.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 
 namespace FastX.Services
@@ -89,6 +90,23 @@ namespace FastX.Services
         //    //var ongoingBooking = await _bookingRepository.Add(newBooking);
         //}
 
+        //private async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, int seatId)
+        //{
+        //    var newBooking = new Booking
+        //    {
+        //        BookingDate = DateTime.Now,
+        //        BookedForWhichDate = travelDate,
+        //        BusId = busId,
+        //        UserId = userId,
+        //        NumberOfSeats = numberOfSeats,
+        //        Status = "ongoing"
+        //    };
+        //    await _seatService.ChangeSeatAvailablityAsync(seatId);
+        //    return await _bookingRepository.Add(newBooking);
+
+        //}
+
+
         private async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, int seatId)
         {
             var newBooking = new Booking
@@ -100,8 +118,19 @@ namespace FastX.Services
                 NumberOfSeats = numberOfSeats,
                 Status = "ongoing"
             };
-            await _seatService.ChangeSeatAvailablityAsync(seatId);
-            return await _bookingRepository.Add(newBooking);
+
+            // Add the new booking to the context
+            var addedBooking = await _bookingRepository.Add(newBooking);
+
+          
+            // Use the generated BookingId in subsequent operations
+            int bookingId = addedBooking.BookingId;
+            _logger.LogInformation($"BookingId: {bookingId}");
+
+            await CreateTicket(bookingId, seatId, busId);
+            await _seatService.ChangeSeatAvailablityAsync(seatId, busId);
+            //return await _bookingRepository.Add(newBooking);
+            return addedBooking;
 
         }
 
@@ -121,127 +150,7 @@ namespace FastX.Services
             _logger.LogInformation($"Ticket created for SeatId: {seatId}, BookingId: {bookingId}");
         }
 
-        public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId)
-        {
-            try
-            {
-                _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
-
-                var seatStatus = await _seatService.CheckWhetherSeatIsAvailableForBooking(busId, seatId, travelDate);
-
-                if (!seatStatus)
-                {
-                    _logger.LogError($"No seats available for booking. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}");
-                    throw new NoSeatsAvailableException();
-                }
-
-                var ongoingBooking = await _bookingRepository.GetOngoingBookingAsync(busId, userId, travelDate);
-
-                if (ongoingBooking == null)
-                {
-                    var createdBooking = await CreateNewBooking(busId, userId, travelDate, 1, seatId);
-
-                    _logger.LogInformation($"Booking successful. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
-
-                    // Now, create a ticket for the booked seat
-                    await CreateTicket(createdBooking.BookingId, seatId, busId);
-                }
-                else
-                {
-                    await ChangeNoOfSeatsAsync(ongoingBooking.BookingId, ongoingBooking.NumberOfSeats + 1);
-                    await _seatService.ChangeSeatAvailablityAsync(seatId);
-                    _logger.LogInformation($"Added seat to existing booking. BookingId: {ongoingBooking.BookingId}, NewNumberOfSeats: " +
-                        $"{ongoingBooking.NumberOfSeats + 1}");
-
-                    // Now, create a ticket for the newly added seat
-                    await CreateTicket(ongoingBooking.BookingId, seatId, busId);
-                }
-            }
-            catch (BusNotFoundException ex)
-            {
-                _logger.LogError($"Bus not found. Error: {ex.Message}");
-                throw;
-            }
-            catch (NoSeatsAvailableException ex)
-            {
-                _logger.LogError($"No seats available. Error: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An unexpected error occurred. Error: {ex.Message}");
-                throw new Exception("Internal Server Error");
-            }
-        }
-        //latest code before seat booke exception
-
         //public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId)
-        //{
-        //    try
-        //    {
-        //        _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
-
-        //        var seatStatus = await _seatService.CheckWhetherSeatIsAvailableForBooking(busId, seatId, travelDate);
-
-        //        if (!seatStatus)
-        //        {
-        //            _logger.LogError($"Seat {seatId} is not available for booking on BusId: {busId}, TravelDate: {travelDate}");
-        //            throw new NoSeatsAvailableException();
-        //        }
-
-        //        var isAlreadyBooked = await _bookingRepository.IsSeatAlreadyBookedAsync(busId, seatId, travelDate);
-
-        //        if (isAlreadyBooked)
-        //        {
-        //            _logger.LogError($"Seat {seatId} is already booked on BusId: {busId}, TravelDate: {travelDate}");
-        //            throw new SeatAlreadyBookedException();
-        //        }
-
-        //        var ongoingBooking = await _bookingRepository.GetOngoingBookingAsync(busId, userId, travelDate);
-
-        //        if (ongoingBooking == null)
-        //        {
-        //            var createdBooking = await CreateNewBooking(busId, userId, travelDate, 1);
-
-        //            _logger.LogInformation($"Booking successful. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
-
-        //            // Now, create a ticket for the booked seat
-        //            await CreateTicket(createdBooking.BookingId, seatId, busId);
-        //        }
-        //        else
-        //        {
-        //            await ChangeNoOfSeatsAsync(ongoingBooking.BookingId, ongoingBooking.NumberOfSeats + 1);
-        //            _logger.LogInformation($"Added seat to existing booking. BookingId: {ongoingBooking.BookingId}, NewNumberOfSeats: " +
-        //                $"{ongoingBooking.NumberOfSeats + 1}");
-
-        //            // Now, create a ticket for the newly added seat
-        //            await CreateTicket(ongoingBooking.BookingId, seatId, busId);
-        //        }
-        //    }
-        //    catch (BusNotFoundException ex)
-        //    {
-        //        _logger.LogError($"Bus not found. Error: {ex.Message}");
-        //        throw;
-        //    }
-        //    catch (NoSeatsAvailableException ex)
-        //    {
-        //        _logger.LogError($"No seats available. Error: {ex.Message}");
-        //        throw;
-        //    }
-        //    catch (SeatAlreadyBookedException ex)
-        //    {
-        //        _logger.LogError($"Seat already booked. Error: {ex.Message}");
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"An unexpected error occurred. Error: {ex.Message}");
-        //        throw new Exception("Internal Server Error");
-        //    }
-        //}
-
-
-        //    public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId)
         //{
         //    try
         //    {
@@ -259,32 +168,33 @@ namespace FastX.Services
 
         //        if (ongoingBooking == null)
         //        {
-        //            var newBooking = new Booking
-        //            {
-        //                BookingDate = DateTime.Now,
-        //                BookedForWhichDate = travelDate,
-        //                BusId = busId,
-        //                UserId = userId,
-        //                NumberOfSeats = 1, // Assuming you want to book one seat initially
-        //                Status = "ongoing"
-        //            };
-
-
-        //            await _bookingRepository.Add(newBooking);
-        //            await _seatService.ChangeSeatAvailablityAsync(seatId);
+        //            var createdBooking = await CreateNewBooking(busId, userId, travelDate, 1, seatId);
 
         //            _logger.LogInformation($"Booking successful. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
+
+        //            // Now, create a ticket for the booked seat
+        //            await CreateTicket(createdBooking.BookingId, seatId, busId);
         //        }
         //        else
         //        {
         //            await ChangeNoOfSeatsAsync(ongoingBooking.BookingId, ongoingBooking.NumberOfSeats + 1);
-        //            _logger.LogInformation($"Added seat to existing booking. BookingId: {ongoingBooking.BookingId}, NewNumberOfSeats: {ongoingBooking.NumberOfSeats + 1}");
+        //            await _seatService.ChangeSeatAvailablityAsync(seatId);
+        //            _logger.LogInformation($"Added seat to existing booking. BookingId: {ongoingBooking.BookingId}, NewNumberOfSeats: " +
+        //                $"{ongoingBooking.NumberOfSeats + 1}");
+
+        //            // Now, create a ticket for the newly added seat
+        //            await CreateTicket(ongoingBooking.BookingId, seatId, busId);
         //        }
+        //    }
+        //    catch (BusNotFoundException ex)
+        //    {
+        //        _logger.LogError($"Bus not found. Error: {ex.Message}");
+        //        throw;
         //    }
         //    catch (NoSeatsAvailableException ex)
         //    {
         //        _logger.LogError($"No seats available. Error: {ex.Message}");
-        //        throw; // Re-throw the exception for the controller to handle
+        //        throw;
         //    }
         //    catch (Exception ex)
         //    {
@@ -292,6 +202,49 @@ namespace FastX.Services
         //        throw new Exception("Internal Server Error");
         //    }
         //}
+
+
+        //--------------------
+        public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId, int totalSeats)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
+
+                var seatStatus = await _seatService.CheckWhetherSeatIsAvailableForBooking(busId, seatId, travelDate);
+
+                if (!seatStatus)
+                {
+                    _logger.LogError($"No seats available for booking. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}");
+                    throw new NoSeatsAvailableException();
+                }
+
+                //var ongoingBooking = await _bookingRepository.GetOngoingBookingAsync(busId, userId, travelDate);
+
+                var createdBooking = await CreateNewBooking(busId, userId, travelDate, totalSeats, seatId);
+                _logger.LogInformation($"Added seat to existing booking. BookingId:, NewNumberOfSeats: " +
+                    $"{totalSeats}");
+
+                // Now, create a ticket for the newly added seat
+                //await CreateTicket(BookingId, seatId, busId);
+
+            }
+            catch (BusNotFoundException ex)
+            {
+                _logger.LogError($"Bus not found. Error: {ex.Message}");
+                throw;
+            }
+            catch (NoSeatsAvailableException ex)
+            {
+                _logger.LogError($"No seats available. Error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred. Error: {ex.Message}");
+                throw new Exception("Internal Server Error");
+            }
+        }
 
 
     }
