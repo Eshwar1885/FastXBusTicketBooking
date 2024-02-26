@@ -107,7 +107,7 @@ namespace FastX.Services
         //}
 
 
-        private async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, int seatId)
+        private async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, List<int>seatIds)
         {
             var newBooking = new Booking
             {
@@ -127,9 +127,13 @@ namespace FastX.Services
             int bookingId = addedBooking.BookingId;
             _logger.LogInformation($"BookingId: {bookingId}");
 
-            await CreateTicket(bookingId, seatId, busId);
-            await _seatService.ChangeSeatAvailablityAsync(seatId, busId);
-            //return await _bookingRepository.Add(newBooking);
+            //await CreateTicket(bookingId, seatId, busId);
+            //await _seatService.ChangeSeatAvailablityAsync(seatId, busId);
+            foreach (var seatId in seatIds)
+            {
+                await CreateTicket(bookingId, seatId, busId);
+                await _seatService.ChangeSeatAvailablityAsync(seatId, busId);
+            }
             return addedBooking;
 
         }
@@ -150,7 +154,13 @@ namespace FastX.Services
             _logger.LogInformation($"Ticket created for SeatId: {seatId}, BookingId: {bookingId}");
         }
 
-        //public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId)
+
+
+
+
+
+
+        //public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId, int totalSeats)
         //{
         //    try
         //    {
@@ -164,27 +174,15 @@ namespace FastX.Services
         //            throw new NoSeatsAvailableException();
         //        }
 
-        //        var ongoingBooking = await _bookingRepository.GetOngoingBookingAsync(busId, userId, travelDate);
+        //        //var ongoingBooking = await _bookingRepository.GetOngoingBookingAsync(busId, userId, travelDate);
 
-        //        if (ongoingBooking == null)
-        //        {
-        //            var createdBooking = await CreateNewBooking(busId, userId, travelDate, 1, seatId);
+        //        var createdBooking = await CreateNewBooking(busId, userId, travelDate, totalSeats, seatId);
+        //        _logger.LogInformation($"Added seat to existing booking. BookingId:, NewNumberOfSeats: " +
+        //            $"{totalSeats}");
 
-        //            _logger.LogInformation($"Booking successful. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
+        //        // Now, create a ticket for the newly added seat
+        //        //await CreateTicket(BookingId, seatId, busId);
 
-        //            // Now, create a ticket for the booked seat
-        //            await CreateTicket(createdBooking.BookingId, seatId, busId);
-        //        }
-        //        else
-        //        {
-        //            await ChangeNoOfSeatsAsync(ongoingBooking.BookingId, ongoingBooking.NumberOfSeats + 1);
-        //            await _seatService.ChangeSeatAvailablityAsync(seatId);
-        //            _logger.LogInformation($"Added seat to existing booking. BookingId: {ongoingBooking.BookingId}, NewNumberOfSeats: " +
-        //                $"{ongoingBooking.NumberOfSeats + 1}");
-
-        //            // Now, create a ticket for the newly added seat
-        //            await CreateTicket(ongoingBooking.BookingId, seatId, busId);
-        //        }
         //    }
         //    catch (BusNotFoundException ex)
         //    {
@@ -204,30 +202,28 @@ namespace FastX.Services
         //}
 
 
-        //--------------------
-        public async Task MakeBooking(int busId, int seatId, DateTime travelDate, int userId, int totalSeats)
+
+
+        public async Task MakeBooking(int busId, List<int> seatIds, DateTime travelDate, int userId, int totalSeats)
         {
             try
             {
-                _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}, UserId: {userId}");
+                _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatIds: {string.Join(",", seatIds)}, TravelDate: {travelDate}, UserId: {userId}");
 
-                var seatStatus = await _seatService.CheckWhetherSeatIsAvailableForBooking(busId, seatId, travelDate);
-
-                if (!seatStatus)
+                foreach (var seatId in seatIds)
                 {
-                    _logger.LogError($"No seats available for booking. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}");
-                    throw new NoSeatsAvailableException();
+                    var seatStatus = await _seatService.CheckWhetherSeatIsAvailableForBooking(busId, seatId, travelDate);
+
+                    if (!seatStatus)
+                    {
+                        _logger.LogError($"No seats available for booking. BusId: {busId}, SeatId: {seatId}, TravelDate: {travelDate}");
+                        throw new NoSeatsAvailableException(); // Halt the booking process if a seat is not available
+                    }
                 }
 
-                //var ongoingBooking = await _bookingRepository.GetOngoingBookingAsync(busId, userId, travelDate);
-
-                var createdBooking = await CreateNewBooking(busId, userId, travelDate, totalSeats, seatId);
-                _logger.LogInformation($"Added seat to existing booking. BookingId:, NewNumberOfSeats: " +
-                    $"{totalSeats}");
-
-                // Now, create a ticket for the newly added seat
-                //await CreateTicket(BookingId, seatId, busId);
-
+                // If all seats are available, proceed to create a single booking for all the seats
+                var createdBooking = await CreateNewBooking(busId, userId, travelDate, totalSeats, seatIds); // Use the first seat ID to create the booking
+                _logger.LogInformation($"Booking successful. BookingId: {createdBooking.BookingId}, NumberOfSeats: {totalSeats}");
             }
             catch (BusNotFoundException ex)
             {
@@ -245,6 +241,7 @@ namespace FastX.Services
                 throw new Exception("Internal Server Error");
             }
         }
+
 
 
     }
