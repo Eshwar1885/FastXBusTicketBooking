@@ -1,6 +1,7 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
+using FastX.Models.DTOs;
 using FastX.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -25,7 +26,7 @@ namespace FastX.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "busoperator")]
+        //[Authorize(Roles = "busoperator")]
         //[Authorize(Roles = "admin")]
 
         [HttpGet("GetBusForBusOperator")]
@@ -60,13 +61,13 @@ namespace FastX.Controllers
         // POST: api/Bus/AddAmenity 
         //this adds Amenity when BusId and Amenity name is given
 
-        [Authorize(Roles = "busoperator")] //this will add into busamenities table
+        //[Authorize(Roles = "busoperator")] //this will add into busamenities table
         [HttpPost("AddAmenityForBusByBusOperator")]
-        public async Task<IActionResult> AddAmenity(int busId, string amenityName)
+        public async Task<IActionResult> AddAmenity([FromBody]AddAmenityDTO addAmenity)
         {
             try
             {
-                await _amenityService.AddAmenityToBus(busId, amenityName);
+                await _amenityService.AddAmenityToBus(addAmenity.BusId, addAmenity.AmenityName);
                 return Ok("Amenity added successfully");
             }
             catch (BusNotFoundException ex)
@@ -87,7 +88,7 @@ namespace FastX.Controllers
         }
 
 
-        [Authorize(Roles = "busoperator")] //this will delete from busamenities table
+        //[Authorize(Roles = "busoperator")] //this will delete from busamenities table
         [HttpDelete("DeleteAmenityForBusByBusOperator")]
         public async Task<IActionResult> DeleteAmenity(int busId, string amenityName)
         {

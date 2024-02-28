@@ -69,81 +69,122 @@ namespace FastX.Services
             {
                 // Generate token
                 var token = await _tokenService.GenerateToken(userInput.Username, myUser.Role);
-                var users = await _userRepository.GetAsync();
-                var filteredUsers = users.Where(u => u.Username == userInput.Username).ToList();
-                var userIds = filteredUsers.Select(u => u.UserId).ToList();
+
+                //var users = await _userRepository.GetAsync();
+                //var filteredUsers = users.Where(u => u.Username == userInput.Username).ToList();
+                //var userIds = filteredUsers.Select(u => u.UserId).ToList();
 
                 // Return output DTO
-                return new LoginUserDTO
-                {
-                    Username = userInput.Username,
-                    Role = myUser.Role,
-                    Token = token,
-                    UserId = userIds[0],
-                    // If you want to include the password, you can assign it here
-                };
-            }
+                //return new LoginUserDTO
+                //{
+                //    Username = userInput.Username,
+                //    Role = myUser.Role,
+                //    Token = token,
+                //    UserId = userIds[0],
+                //    // If you want to include the password, you can assign it here
+                //};
 
+                if (myUser.Role == "user")
+                {
+                    var user = await _userRepository.GetAsync();
+                    var filteredUsers = user.Where(u => u.Username == userInput.Username).ToList();
+                    var userIds = filteredUsers.Select(u => u.UserId).ToList();
+                    if (user != null)
+                    {
+                        // Return output DTO with user ID
+                        return new LoginUserDTO
+                        {
+                            Username = userInput.Username,
+                            Role = myUser.Role,
+                            Token = token,
+                            UserId = userIds[0],
+                        };
+                    }
+                }
+
+                else if (myUser.Role == "busoperator")
+                {
+                    var busOperator = await _busOperatorRepository.GetAsync();
+                    var filteredUsers = busOperator.Where(u => u.Username == userInput.Username).ToList();
+                    var busOperatorIds = filteredUsers.Select(u => u.BusOperatorId).ToList();
+                    if (busOperator != null)
+                    {
+                        // Return output DTO with bus operator ID
+                        return new LoginUserDTO
+                        {
+                            Username = userInput.Username,
+                            Role = myUser.Role,
+                            Token = token,
+                            UserId = busOperatorIds[0],
+                        };
+
+                    }
+
+                    throw new InvlidUserException();
+                }
+
+            }
             throw new InvlidUserException();
+
         }
 
         private bool ComparePasswords(byte[] password, byte[] userPassword)
-        {
-            for (int i = 0; i < password.Length; i++)
             {
-                if (password[i] != userPassword[i])
-                    return false;
-            }
-            return true;
-        }
-
-        private byte[] GetPasswordEncrypted(string password, byte[] key)
-        {
-            HMACSHA512 hmac = new HMACSHA512(key);
-            var userpassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return userpassword;
-        }
-
-        public async Task<LoginUserDTO> Register(RegisterUserDTO user)
-        {
-            //exception for dup reg
-            var existingUser = await _alluserRepository.GetAsync(user.Username);
-            if (existingUser != null)
-            {
-                throw new UserAlreadyExistsException();
-            }
-            //exc end
-
-            AllUser myuser = new RegisterToAllUser(user).GetAllUser();
-            myuser = await _alluserRepository.Add(myuser);
-
-            LoginUserDTO result = new LoginUserDTO
-            {
-                Username = myuser.Username,
-                Role = myuser.Role,
-            };
-
-            switch (user.Role.ToLower())
-            {
-                case "admin":
-                    Admin admin = new RegisterToAdmin(user).GetAdmin();
-                    await _adminRepository.Add(admin);
-                    break;
-                case "busoperator":
-                    BusOperator busOperator = new RegisterToBusOperator(user).GetBusOperator();
-                    await _busOperatorRepository.Add(busOperator);
-                    break;
-                case "user":
-                    User regularUser = new RegisterToUser(user).GetUser();
-                    await _userRepository.Add(regularUser);
-                    break;
-                default:
-                    // Handle invalid role here (throw exception, log error, etc.)
-                    break;
+                for (int i = 0; i < password.Length; i++)
+                {
+                    if (password[i] != userPassword[i])
+                        return false;
+                }
+                return true;
             }
 
-            return result;
+            private byte[] GetPasswordEncrypted(string password, byte[] key)
+            {
+                HMACSHA512 hmac = new HMACSHA512(key);
+                var userpassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return userpassword;
+            }
 
+            public async Task<LoginUserDTO> Register(RegisterUserDTO user)
+            {
+                //exception for dup reg
+                var existingUser = await _alluserRepository.GetAsync(user.Username);
+                if (existingUser != null)
+                {
+                    throw new UserAlreadyExistsException();
+                }
+                //exc end
+
+                AllUser myuser = new RegisterToAllUser(user).GetAllUser();
+                myuser = await _alluserRepository.Add(myuser);
+
+                LoginUserDTO result = new LoginUserDTO
+                {
+                    Username = myuser.Username,
+                    Role = myuser.Role,
+                };
+
+                switch (user.Role.ToLower())
+                {
+                    case "admin":
+                        Admin admin = new RegisterToAdmin(user).GetAdmin();
+                        await _adminRepository.Add(admin);
+                        break;
+                    case "busoperator":
+                        BusOperator busOperator = new RegisterToBusOperator(user).GetBusOperator();
+                        await _busOperatorRepository.Add(busOperator);
+                        break;
+                    case "user":
+                        User regularUser = new RegisterToUser(user).GetUser();
+                        await _userRepository.Add(regularUser);
+                        break;
+                    default:
+                        // Handle invalid role here (throw exception, log error, etc.)
+                        break;
+                }
+
+                return result;
+
+            }
         }
     }
-}

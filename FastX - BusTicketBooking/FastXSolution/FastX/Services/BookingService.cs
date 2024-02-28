@@ -204,7 +204,7 @@ namespace FastX.Services
 
 
 
-        public async Task MakeBooking(int busId, List<int> seatIds, DateTime travelDate, int userId, int totalSeats)
+        public async Task<Booking> MakeBooking(int busId, List<int> seatIds, DateTime travelDate, int userId, int totalSeats)
         {
             try
             {
@@ -224,6 +224,7 @@ namespace FastX.Services
                 // If all seats are available, proceed to create a single booking for all the seats
                 var createdBooking = await CreateNewBooking(busId, userId, travelDate, totalSeats, seatIds); // Use the first seat ID to create the booking
                 _logger.LogInformation($"Booking successful. BookingId: {createdBooking.BookingId}, NumberOfSeats: {totalSeats}");
+                return createdBooking;
             }
             catch (BusNotFoundException ex)
             {

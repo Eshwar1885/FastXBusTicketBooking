@@ -60,16 +60,16 @@ namespace FastX.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> MakeBooking(BookingDTO booking)
+        public async Task<ActionResult<Booking>> MakeBooking(BookingDTO booking)
         {
             try
             {
                 //_logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatIds: {string.Join(",", seatIds)}, TravelDate: {travelDate}, UserId: {userId}");
 
-                await _bookingService.MakeBooking(booking.BusId, booking.SeatIds, booking.TravelDate, booking.UserId, booking.TotalSeats);
+                var bookingDetails = await _bookingService.MakeBooking(booking.BusId, booking.SeatIds, booking.TravelDate, booking.UserId, booking.TotalSeats);
 
                 _logger.LogInformation("Booking successful.");
-                return Ok();
+                return Ok(bookingDetails);
             }
             catch (BusNotFoundException ex)
             {

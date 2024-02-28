@@ -23,12 +23,35 @@ namespace FastX.Controllers
             _logger = logger;
         }
 
-        [HttpPost("create-payment/{bookingId}")]
-        public async Task<IActionResult> CreatePayment(int bookingId)
+        //[HttpPost("create-payment/{bookingId}")]
+        //public async Task<IActionResult> CreatePayment(int bookingId)
+        //{
+        //    try
+        //    {
+        //        await _paymentService.CreatePayment(bookingId);
+
+        //        return Ok("Payment created successfully");
+        //    }
+        //    catch (BookingNotFoundException ex)
+        //    {
+        //        _logger.LogError($"Booking not found. Error: {ex.Message}");
+        //        return NotFound("Booking not found");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"An unexpected error occurred. Error: {ex.Message}");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
+
+
+
+        [HttpPost("create-payment")]
+        public async Task<IActionResult> CreatePayment(Payment payment)
         {
             try
             {
-                await _paymentService.CreatePayment(bookingId);
+                await _paymentService.CreatePayment(payment.BookingId);
 
                 return Ok("Payment created successfully");
             }

@@ -7,10 +7,10 @@ namespace FastX.Models
         [Key]
         public int RouteId { get; set; }
 
-        [Required(ErrorMessage = "Origin is required")]
+        //[Required(ErrorMessage = "Origin is required")]
         public string? Origin { get; set; }
 
-        [Required(ErrorMessage = "Destination is required")]
+        //[Required(ErrorMessage = "Destination is required")]
         public string? Destination { get; set; }
         public DateTime? DepartureTime { get; set; }
         public DateTime? ArrivalTime { get; set; }

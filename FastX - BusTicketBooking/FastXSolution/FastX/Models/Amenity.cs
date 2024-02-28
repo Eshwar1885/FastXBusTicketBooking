@@ -7,7 +7,7 @@ namespace FastX.Models
     {
         [Key]
         public int AmenityId { get; set; }
-        [Required(ErrorMessage = "Name is required")]
+        //[Required(ErrorMessage = "Name is required")]
         public string? Name { get; set; }
         public ICollection<BusAmenity>? BusAmenities { get; set; }
 

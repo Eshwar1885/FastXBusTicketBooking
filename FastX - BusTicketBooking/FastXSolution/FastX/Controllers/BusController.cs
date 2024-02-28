@@ -26,11 +26,11 @@ namespace FastX.Controllers
 
         //[Authorize(Roles = "busoperator")]
         [HttpPost("AddBusByBusOperator")]
-        public async Task<IActionResult> AddBus(string busName, string busType, int totalSeats, int busOperatorId)
+        public async Task<IActionResult> AddBus([FromBody]Bus bus)
         {
             try
             {
-                var addedBus = await _busService.AddBus(busName, busType, totalSeats, busOperatorId);
+                var addedBus = await _busService.AddBus(bus.BusName, bus.BusType, bus.TotalSeats, bus.BusOperatorId);
                 return Ok(addedBus);
             }
             catch (BusOperatorNotFoundException ex)

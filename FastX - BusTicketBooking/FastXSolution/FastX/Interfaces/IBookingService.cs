@@ -1,9 +1,11 @@
-﻿namespace FastX.Interfaces
+﻿using FastX.Models;
+
+namespace FastX.Interfaces
 {
     public interface IBookingService
     {
         public Task ChangeNoOfSeatsAsync(int id, int noOfSeats);
-        public Task MakeBooking(int busId, List<int>seatIds, DateTime travelDate, int userId, int totalSeats);
+        public Task<Booking> MakeBooking(int busId, List<int>seatIds, DateTime travelDate, int userId, int totalSeats);
 
     }
 
