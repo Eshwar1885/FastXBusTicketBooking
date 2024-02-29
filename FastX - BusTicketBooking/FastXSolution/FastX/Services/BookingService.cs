@@ -1,6 +1,7 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
+using FastX.Models.DTOs;
 using FastX.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Numerics;
@@ -12,14 +13,15 @@ namespace FastX.Services
         private readonly IRepository<int, Ticket> _ticketRepository;
         private readonly IBookingRepository<int, Booking> _bookingRepository;
         // private readonly IBookingRepository<int, Booking> _booking2Repository;
-        //private readonly IPaymentRepository _paymentRepository;
+        private readonly IRepository<int, User> _userRepository;
         private readonly ISeatService _seatService;
         private readonly ILogger<BookingService> _logger;
+
 
         public BookingService(
             IRepository<int, Ticket> ticketRepository,
             IBookingRepository<int, Booking> bookingRepository,
-           // IPaymentRepository paymentRepository,
+            IRepository<int, User> userRepository,
            ISeatService seatService,
            IBookingRepository<int, Booking> booking2Repository,
         ILogger<BookingService> logger)
@@ -27,7 +29,7 @@ namespace FastX.Services
             _ticketRepository = ticketRepository;
             _bookingRepository = bookingRepository;
             //_booking2Repository = booking2Repository;
-            //_paymentRepository = paymentRepository;
+            _userRepository = userRepository;
             _seatService = seatService;
             _logger = logger;
         }
@@ -244,6 +246,58 @@ namespace FastX.Services
         }
 
 
+
+
+
+
+        public async Task<List<CompletedBookingDTO>> GetCompletedBookings(int userId)
+        {
+            var users = await _userRepository.GetAsync();
+            var user = users.Where(user => user.UserId == userId).ToList();
+            if (user == null || !user.Any())
+            {
+                throw new NoSuchUserException();
+            }
+
+                    var completedBookings = user[0]?.Bookings
+            .Where(b => b.Status == "Complete")
+            .Select(b => new CompletedBookingDTO
+            {
+                BusName = b?.Bus?.BusName,
+                BusType = b?.Bus?.BusType,
+                NumberOfSeats = b?.NumberOfSeats ?? 0,
+                BookedForWhichDate = b?.BookedForWhichDate,
+                Origin = b?.Bus?.BusRoute?.FirstOrDefault()?.Route?.Origin,
+                Destination = b?.Bus?.BusRoute?.FirstOrDefault()?.Route?.Destination,
+                SeatNumbers = b?.Tickets != null ? string.Join(",", b.Tickets.Select(t => t.SeatId)) : ""
+            }).ToList();
+
+            return completedBookings;
+        }
+
+        public async Task<List<CompletedBookingDTO>> GetUpcomingBookings(int userId)
+        {
+            var completedBookings = await GetCompletedBookings(userId);
+            var today = DateTime.Today;
+
+            var upcomingBookings = completedBookings
+                .Where(b => b.BookedForWhichDate > today)
+                .ToList();
+
+            return upcomingBookings;
+        }
+
+        public async Task<List<CompletedBookingDTO>> GetPastBookings(int userId)
+        {
+            var completedBookings = await GetCompletedBookings(userId);
+            var today = DateTime.Today;
+
+            var pastBookings = completedBookings
+                .Where(b => b.BookedForWhichDate < today)
+                .ToList();
+
+            return pastBookings;
+        }
 
     }
 

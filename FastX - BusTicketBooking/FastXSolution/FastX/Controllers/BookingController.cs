@@ -90,5 +90,64 @@ namespace FastX.Controllers
 
 
 
+
+        [HttpGet("completed/{userId}")]
+        public async Task<ActionResult<List<CompletedBookingDTO>>> GetCompletedBookings(int userId)
+        {
+            try
+            {
+                var completedBookings = await _bookingService.GetCompletedBookings(userId);
+                return Ok(completedBookings);
+            }
+            catch (NoSuchUserException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [HttpGet("upcoming/{userId}")]
+        public async Task<ActionResult<List<CompletedBookingDTO>>> GetUpcomingBookings(int userId)
+        {
+            try
+            {
+                var upcomingBookings = await _bookingService.GetUpcomingBookings(userId);
+                return Ok(upcomingBookings);
+            }
+            catch (NoSuchUserException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("past/{userId}")]
+        public async Task<ActionResult<List<CompletedBookingDTO>>> GetPastBookings(int userId)
+        {
+            try
+            {
+                var pastBookings = await _bookingService.GetPastBookings(userId);
+                return Ok(pastBookings);
+            }
+            catch (NoSuchUserException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+
+
     }
 }

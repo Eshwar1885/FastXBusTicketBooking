@@ -1,4 +1,5 @@
 ﻿using FastX.Contexts;
+using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +26,16 @@ namespace FastX.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Routee>> GetAsync()
+        public async Task<List<Routee>> GetAsync()
         {
-            throw new NotImplementedException();
+            var routees = await _context.Routees.ToListAsync();
+
+            if (routees == null)
+            {
+                throw new NoSuchRouteeException();
+            }
+
+            return routees;
         }
 
         public Task<Routee> GetAsync(int key)

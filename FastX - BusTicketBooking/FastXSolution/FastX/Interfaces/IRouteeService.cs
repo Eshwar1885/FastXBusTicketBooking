@@ -10,6 +10,8 @@ namespace FastX.Interfaces
         public Task<Routee> GetRoutee(int id);
 
         public Task<Routee> DeleteRoutee(int id);
+        public Task AddRouteeToBus(int busId, string origin, string destination, DateTime travelDate);
+
 
 
     }

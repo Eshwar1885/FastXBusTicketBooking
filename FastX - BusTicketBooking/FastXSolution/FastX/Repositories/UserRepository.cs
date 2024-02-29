@@ -27,7 +27,13 @@ namespace FastX.Repositories
 
         public async Task<List<User>> GetAsync()
         {
-            var users = await _context.Users.ToListAsync();
+            //var users = await _context.Users.Include(u => u.Bookings).ThenInclude(u => u.Tickets).ThenInclude(u=>u.Bus).ToListAsync();
+            var users = await _context.Users
+        .Include(u => u.Bookings)                        // Include bookings
+            .ThenInclude(b => b.Tickets)                // Include tickets within bookings
+        .Include(u => u.Bookings)                        // Include bookings again
+            .ThenInclude(b => b.Bus).ThenInclude(b=>b.BusRoute).ThenInclude(b=>b.Route)                   // Include bus within bookings
+        .ToListAsync();
             return users;
         }
 

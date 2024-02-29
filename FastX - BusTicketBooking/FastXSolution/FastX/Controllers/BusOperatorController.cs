@@ -30,7 +30,7 @@ namespace FastX.Controllers
         //[Authorize(Roles = "admin")]
 
         [HttpGet("GetBusForBusOperator")]
-        public async Task<IActionResult> GetBusesByOperatorId(int busOperatorId)
+        public async Task<ActionResult<Bus>> GetBusesByOperatorId([FromQuery]int busOperatorId)
         {
             try
             {

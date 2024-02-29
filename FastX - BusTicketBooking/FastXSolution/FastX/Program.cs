@@ -93,6 +93,9 @@ namespace FastX
             builder.Services.AddScoped<ISeatRepository<int, Seat>, SeatRepository>();
             builder.Services.AddScoped<IRepository<int, Ticket>, TicketRepository>();
             builder.Services.AddScoped<IAmenityRepository<int, Amenity>, AmenityRepository>();
+            builder.Services.AddScoped<IRepository<int, BusRoute>, BusRouteRepository>();
+
+
             #endregion
 
 
@@ -108,6 +111,8 @@ namespace FastX
             builder.Services.AddScoped<IAmenityService, AmenityService>();
             builder.Services.AddScoped<IBusOperatorService, BusOperatorService>();
             builder.Services.AddScoped<ISeatService, SeatService>();
+            builder.Services.AddScoped<IRouteeService, RouteService>();
+
 
 
             #endregion

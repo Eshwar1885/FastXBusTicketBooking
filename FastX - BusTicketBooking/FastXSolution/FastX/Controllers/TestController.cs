@@ -115,28 +115,29 @@ namespace FastX.Controllers
         }
 
 
-        //[Route("GetRoutesDirectlyFromRouteTable")]
-        //[HttpGet]
-        //public async Task<List<Routee>> GetAll()
-        //{
-        //    var routee = await _routeService.GetRouteeList();
-        //    return routee;
-        //}
-        //[Route("GetRoutesByIdDirectlyFromRouteTable")]
+        [Route("GetRoutesDirectlyFromRouteTable")]
+        [HttpGet]
+        public async Task<List<Routee>> GetAll()
+        {
+            var routee = await _routeService.GetRouteeList();
+            return routee;
+        }
 
-        //[HttpGet]
-        //public async Task<Routee> GetById(int id)
-        //{
-        //    var routee = await _routeService.GetRoutee(id);
-        //    return routee;
-        //}
-        //[Route("DeleteRoutesDirectlyFromRouteTable")]
-        //[HttpDelete]
-        //public async Task<Routee> Delete(int id)
-        //{
-        //    var routee = await _routeService.DeleteRoutee(id);
-        //    return routee;
-        //}
+        [Route("GetRoutesByIdDirectlyFromRouteTable")]
+        [HttpGet]
+        public async Task<Routee> GetById(int id)
+        {
+            var routee = await _routeService.GetRoutee(id);
+            return routee;
+        }
+
+        [Route("DeleteRoutesDirectlyFromRouteTable")]
+        [HttpDelete]
+        public async Task<Routee> Delete(int id)
+        {
+            var routee = await _routeService.DeleteRoutee(id);
+            return routee;
+        }
 
 
 
