@@ -10,6 +10,8 @@ namespace FastX.Interfaces
         public Task<Ticket> GetTicket(int id);
         public Task<Ticket> DeleteTicket(int id);
         public Task<List<TicketDTO>> GetTicketsForUser(int id );
+        public Task DeleteCancelledBookingTickets(int bookingId, int userId);
+
 
     }
 }

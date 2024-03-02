@@ -30,14 +30,14 @@ namespace FastX.Repositories
 
         public async Task<List<Booking>> GetAsync()
         {
-            var bookings = await _context.Bookings.Include(t=>t.Bus).Include(t => t.Tickets).ToListAsync(); //
+            var bookings = await _context.Bookings.Include(t=>t.Bus).ThenInclude(t=>t.BusRoute).Include(t => t.Tickets).ThenInclude(t=>t.Seat).ToListAsync(); //
             return bookings;
         }
 
         public async Task<Booking> GetAsync(int key)
         {
             var bookings = await GetAsync();
-            var booking = bookings.FirstOrDefault(e => e.BookingId == key);
+            var booking = bookings.FirstOrDefault(e => e?.BookingId == key);
             if (booking != null)
                 return booking;
             // throw new NoBookingsAvailableException();

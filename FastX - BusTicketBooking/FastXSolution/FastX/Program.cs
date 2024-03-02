@@ -110,8 +110,6 @@ namespace FastX
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<IAmenityService, AmenityService>();
             builder.Services.AddScoped<IBusOperatorService, BusOperatorService>();
-            builder.Services.AddScoped<ISeatService, SeatService>();
-            builder.Services.AddScoped<IRouteeService, RouteService>();
 
 
 

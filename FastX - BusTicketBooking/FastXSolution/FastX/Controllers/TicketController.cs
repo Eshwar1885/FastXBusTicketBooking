@@ -42,5 +42,16 @@ namespace FastX.Controllers
         }
 
         // Add other controller actions for updating, deleting, and listing tickets
+
+
+        [Route("DeleteCancelledBookingTickets")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTicket(int bookingId, int userId)
+        {
+            await _ticketService.DeleteCancelledBookingTickets(bookingId,userId);
+            return Ok();
+        }
+
+
     }
 }

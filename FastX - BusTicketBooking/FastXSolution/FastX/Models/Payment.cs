@@ -10,7 +10,7 @@ namespace FastX.Models
         [ForeignKey("BookingId")]
         public int BookingId { get; set; }
 
-        public float? Amount { get; set; }
+        public float Amount { get; set; }
         public string? PaymentStatus { get; set; }
         public DateTime? PaymentDate { get; set; } = DateTime.Now;
 

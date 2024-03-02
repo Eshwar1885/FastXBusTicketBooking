@@ -30,7 +30,7 @@ namespace FastX.Repositories
 
         public async Task<List<Payment>> GetAsync()
         {
-            var payments = _context.Payments.ToList();
+            var payments = _context.Payments.Include(p=>p.Booking).ToList();
             return payments;
         }
 

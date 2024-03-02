@@ -13,21 +13,23 @@ namespace FastX.Services
         private IRepository<int, Ticket> _ticketRepository;
         private readonly ILogger<TicketService> _logger;
         private readonly IRepository<int, Bus> _busRepository;
+        private readonly IBookingRepository<int, Booking> _bookingRepository;
 
-        public TicketService(IRepository<int, Ticket> ticketRepository, IRepository<int,Bus> busRepository,
-            ILogger<TicketService> logger)
+
+        public TicketService(IRepository<int, Ticket> ticketRepository,
+            ILogger<TicketService> logger, IRepository<int, Bus> busRepository, IBookingRepository<int, Booking> bookingRepository)
         {
             _ticketRepository = ticketRepository;
             _logger = logger;
             _busRepository = busRepository;
-
+            _bookingRepository = bookingRepository;
         }
         public async Task<Ticket> AddTicket(Ticket ticket)
         {
-            if (ticket == null)
-            {
-                throw new ArgumentNullException(nameof(ticket));
-            }
+            //if (ticket == null)
+            //{
+            //    throw new ArgumentNullException(nameof(ticket));
+            //}
 
             try
             {
@@ -165,6 +167,39 @@ namespace FastX.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while retrieving tickets for user with ID: {userId}");
+                throw;
+            }
+        }
+
+
+        public async Task DeleteCancelledBookingTickets(int bookingId, int userId)
+        {
+            try
+            {
+                var booking = await _bookingRepository.GetAsync(bookingId);
+
+                //if (booking != null && booking.UserId == userId && booking.Status == "cancelled")
+                if (booking != null && booking.UserId == userId && booking.Status == "refunded")
+
+                {
+                    // Remove tickets associated with the cancelled booking
+                    foreach (var ticket in booking.Tickets)
+                    {
+                        await _ticketRepository.Delete(ticket.TicketId);
+                        //_ticketService.DeleteTicket(ticket.TicketId)
+                    }
+
+                    //await _bookingRepository.SaveChangesAsync();
+                    _logger.LogInformation($"Cancelled booking tickets deleted for Booking ID: {bookingId} and User ID: {userId}");
+                }
+                else
+                {
+                    _logger.LogInformation($"No cancelled booking found for Booking ID: {bookingId} and User ID: {userId}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error deleting cancelled booking tickets: {ex.Message}");
                 throw;
             }
         }

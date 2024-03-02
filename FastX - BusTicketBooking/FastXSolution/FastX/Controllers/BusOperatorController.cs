@@ -113,5 +113,13 @@ namespace FastX.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Route("AcceptRefund")]
+        [HttpGet]
+        public async Task<IActionResult>AcceptRefund(int bookingId, int userId)
+        {
+            await _busOperatorService.AcceptRefund(bookingId, userId);
+            return Ok();
+        }
     }
 }

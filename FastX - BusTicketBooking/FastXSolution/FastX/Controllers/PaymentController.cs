@@ -67,6 +67,14 @@ namespace FastX.Controllers
             }
         }
 
+        //[HttpGet("RefundAmount")]
+        //public async Task<ActionResult<float>> FindRefundPrice(int userId, int bookingId)
+        //{
+        //    var refundAmount = await _paymentService.FindRefundPrice(userId, bookingId);
+        //    return Ok(refundAmount);
+        //}
+
+
 
 
 

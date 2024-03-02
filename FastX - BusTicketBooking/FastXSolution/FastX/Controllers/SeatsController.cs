@@ -56,5 +56,12 @@ namespace FastX.Controllers
 
 
         }
+
+        [HttpGet("ChangeSeatAvailabilityForCancelledBookings")]
+        public async Task<IActionResult> ChangeSeatAvailabilityForCancelledBookings()
+        {
+            await _seatService.ChangeSeatAvailabilityForCancelledBookings();
+            return Ok();
+        }
     }
 }

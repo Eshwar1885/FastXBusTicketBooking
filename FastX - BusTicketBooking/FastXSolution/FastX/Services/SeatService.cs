@@ -96,6 +96,43 @@ namespace FastX.Services
 
         }
 
+        public async Task ChangeSeatAvailablity(int seatId, int busId)
+        {
+            var seat = await _seatRepository.GetAsync(busId, seatId);
+            if (seat != null)
+            {
+                seat.IsAvailable = true;
+                await _seatRepository.Update(seat);
+
+            }
+
+        }
+
+        public async Task ChangeSeatAvailabilityForCancelledBookings()
+        {
+            // Get all bookings
+            var allBookings = await _bookingRepository.GetAsync();
+
+            // Filter out the cancelled bookings
+            var cancelledBookings = allBookings.Where(b => b.Status == "cancelled");
+
+            // Iterate through cancelled bookings
+            foreach (var booking in cancelledBookings)
+            {
+                // Check if the booking has associated tickets
+                if (booking.Tickets != null && booking.Tickets.Any())
+                {
+                    // Iterate through tickets and change seat availability
+                    foreach (var ticket in booking.Tickets)
+                    {
+                        await ChangeSeatAvailablity(ticket.SeatId, booking.BusId);
+                    }
+                }
+            }
+        }
+
+
+
         public async Task<List<SeatDTOForUser>> GetAvailableSeats(int busId)
         {
             try

@@ -1,4 +1,5 @@
 ﻿using FastX.Contexts;
+using FastX.Exceptions;
 using FastX.Interfaces;
 using FastX.Models;
 using Microsoft.EntityFrameworkCore;
@@ -27,15 +28,15 @@ namespace FastX.Repositories
 
         public async Task<List<User>> GetAsync()
         {
-            //var users = await _context.Users.Include(u => u.Bookings).ThenInclude(u => u.Tickets).ThenInclude(u=>u.Bus).ToListAsync();
             var users = await _context.Users
         .Include(u => u.Bookings)                        // Include bookings
             .ThenInclude(b => b.Tickets)                // Include tickets within bookings
-        .Include(u => u.Bookings)                        // Include bookings again
-            .ThenInclude(b => b.Bus).ThenInclude(b=>b.BusRoute).ThenInclude(b=>b.Route)                   // Include bus within bookings
+        //.Include(u => u.Bookings)                        // Include bookings again
+        //    .ThenInclude(b => b.Bus).ThenInclude(b => b.BusRoute).ThenInclude(b => b.Route)                   // Include bus within bookings
         .ToListAsync();
             return users;
         }
+
 
         //public async Task<User> GetAsync(string key)
         //{
@@ -44,9 +45,26 @@ namespace FastX.Repositories
 
         //}
 
-        public Task<User> GetAsync(int key)
+        public async Task<User> GetAsync(int key)
         {
-            throw new NotImplementedException();
+
+            var users = await GetAsync();
+            var user = users.SingleOrDefault(u => u.UserId == key);
+            //if (user != null)
+            //{
+            //    return user;
+            //}
+            //throw new AmenitiesNotFoundException();
+
+
+            //var user123 = await _context.Users
+            //        .Include(u => u.Bookings)                        // Include bookings
+            //            .ThenInclude(b => b.Tickets)                // Include tickets within bookings
+            //        .Include(u => u.Bookings)                        // Include bookings again
+            //            .ThenInclude(b => b.Bus).ThenInclude(b => b.BusRoute).ThenInclude(b => b.Route)                   // Include bus within bookings
+            //        .ToListAsync();
+            //return user123;
+            return user;
         }
 
         public Task<User> Update(User item)

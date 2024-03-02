@@ -8,6 +8,11 @@ namespace FastX.Interfaces
         public Task<List<Payment>> GetPaymentList();
         public Task<Payment> GetPaymentBy(int id);
         public Task CreatePayment(int bookingId);
+        //public Task<float> FindRefundPrice(int userId, int bookingId);
+
+        public Task<float> FindRefundPrice(int bookingId);
+
+
 
 
     }

@@ -125,5 +125,20 @@ namespace FastX.Services
             }
         }
 
+        //public async Task<float> FindRefundPrice(int userId, int bookingId)
+        //{
+        //    var payments = await GetPaymentList();
+        //    var filteredPayments = payments.Where(payment => payment.Booking.UserId == userId &&
+        //    payment.BookingId == bookingId).ToList();
+        //    return filteredPayments[0].Amount;
+        //}
+        public async Task<float> FindRefundPrice(int bookingId)
+        {
+            var payments = await GetPaymentList();
+            var filteredPayments = payments.Where(payment => payment.BookingId == bookingId).ToList();
+            return filteredPayments[0].Amount;
+        }
+
+
     }
 }

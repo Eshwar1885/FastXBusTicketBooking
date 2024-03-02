@@ -35,9 +35,10 @@ namespace FastX.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<BusRoute>> GetAsync()
+        public async Task<List<BusRoute>> GetAsync()
         {
-            throw new NotImplementedException();
+            var busRoutes = _context.BusRoute.ToList();
+            return busRoutes;
         }
 
         public Task<BusRoute> GetAsync(int key)

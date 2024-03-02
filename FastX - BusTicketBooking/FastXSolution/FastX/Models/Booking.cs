@@ -12,7 +12,7 @@ namespace FastX.Models
         public DateTime? BookingDate { get; set; }
         public int NumberOfSeats { get; set; }
         public string? Status { get; set; }
-        public DateTime? BookedForWhichDate { get; set; }
+        public DateTime BookedForWhichDate { get; set; }
         // Foreign Keys
         [ForeignKey("UserId")]
         public int UserId { get; set; }

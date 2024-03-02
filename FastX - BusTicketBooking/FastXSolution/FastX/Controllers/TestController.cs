@@ -22,12 +22,17 @@ namespace FastX.Controllers
         private readonly ILogger<TestController> _logger;
         private readonly IRouteeService _routeService;
         private readonly ITicketService _ticketService;
+        private readonly IBookingService _bookingService;
+        private readonly IRepository<int, User> _userRepository;
+
+
 
 
         public TestController(IBusOperatorService busOperatorService,
             IPaymentService paymentService,
             IRouteeService routeService,
-        IAmenityService amenityService, ILogger<TestController> logger, ITicketService ticketService)
+        IAmenityService amenityService, ILogger<TestController> logger, ITicketService ticketService
+            , IBookingService bookingService, IRepository<int, User> userRepository)
         {
             _busOperatorService = busOperatorService;
             _amenityService = amenityService;
@@ -35,6 +40,8 @@ namespace FastX.Controllers
             _routeService = routeService;
             _logger = logger;
             _ticketService = ticketService;
+            _bookingService = bookingService;
+            _userRepository = userRepository;
         }
 
 
@@ -208,5 +215,24 @@ namespace FastX.Controllers
             return ticket;
         }
         //-----------------------
+
+
+
+        [Route("GetBookingDirectlyFromBookingTable")]
+        [HttpGet]
+        public async Task<List<Booking>> GetBooking()
+        {
+            var booking = await _bookingService.GetBookingList();
+            return booking;
+        }
+
+
+        [Route("UserTable")]
+        [HttpGet]
+        public async Task<User> GetUsers(int userId)
+        {
+            var booking = await _userRepository.GetAsync(userId);
+            return booking;
+        }
     }
 }
