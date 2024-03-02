@@ -129,6 +129,8 @@ namespace FastX.Services
         {
             try
             {
+                await UpdateOngoingBookingsAndResetSeats();
+
                 _logger.LogInformation($"Attempting to make booking for BusId: {busId}, SeatIds: {string.Join(",", seatIds)}, TravelDate: {travelDate}, UserId: {userId}");
 
                 foreach (var seatId in seatIds)
