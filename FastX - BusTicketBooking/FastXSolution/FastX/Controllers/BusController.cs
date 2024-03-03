@@ -26,12 +26,12 @@ namespace FastX.Controllers
 
         //[Authorize(Roles = "busoperator")]
         [HttpPost("AddBusByBusOperator")]
-        public async Task<IActionResult> AddBus([FromBody]Bus bus)
+        public async Task<IActionResult> AddBus([FromBody]AddBusAndSeatsDTO bus)
         {
             try
             {
-                var addedBus = await _busService.AddBus(bus.BusName, bus.BusType, bus.TotalSeats, bus.BusOperatorId);
-                return Ok(addedBus);
+                await _busService.AddBus(bus.BusName, bus.BusType, bus.TotalSeats, bus.BusOperatorId, bus.SeatPrice);
+                return Ok();
             }
             catch (BusOperatorNotFoundException ex)
             {
@@ -95,7 +95,7 @@ namespace FastX.Controllers
         //    }
         //}
 
-        //=========frnt end=====
+        //=========frnt end=====correct one uncomment
         [HttpGet("search")]
         public async Task<ActionResult<List<BusDTOForUser>>> SearchBusesAsync([FromQuery] BusInputDTO bus)
         {
@@ -162,7 +162,6 @@ namespace FastX.Controllers
         //        return StatusCode(500, "An error occurred while processing your request.");
         //    }
         //}
-
 
 
         [HttpGet("searchWithBusType")]

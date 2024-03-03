@@ -98,8 +98,8 @@ namespace FastX.Services
                 throw new Exception("Internal Server Error");
             }
         }
-
-        private async Task<float> CalculateTotalPriceAsync(Booking booking)
+        
+        public async Task<float> CalculateTotalPriceAsync(Booking booking)
         {
             try
             {

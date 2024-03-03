@@ -13,13 +13,14 @@ namespace FastX.Services
     {
         private readonly IRepository<int, Ticket> _ticketRepository;
         private readonly IBookingRepository<int, Booking> _bookingRepository;
-        // private readonly IBookingRepository<int, Booking> _booking2Repository;
         private readonly IRepository<int, User> _userRepository;
         private readonly ISeatService _seatService;
         private readonly ILogger<BookingService> _logger;
         private readonly FastXContext _context;
         //private readonly IRepository<int, BusRoute> _busRouteRepository;
         private readonly IPaymentService _paymentService;
+        private readonly IRepository<int, Bus> _busRepository;
+
 
 
 
@@ -31,22 +32,23 @@ namespace FastX.Services
             IBookingRepository<int, Booking> bookingRepository,
             IRepository<int, User> userRepository,
            ISeatService seatService,
-           //IBookingRepository<int, Booking> booking2Repository,
         ILogger<BookingService> logger,
         //IRepository<int, BusRoute> busRouteRepository
-        IPaymentService paymentService
+        IPaymentService paymentService,
+        IRepository<int, Bus> busRepository
+
 
             )
         {
             _ticketRepository = ticketRepository;
             _bookingRepository = bookingRepository;
-            //_booking2Repository = booking2Repository;
             _userRepository = userRepository;
             _seatService = seatService;
             _logger = logger;
             _context = context;
             //_busRouteRepository = busRouteRepository;
             _paymentService = paymentService;
+            _busRepository = busRepository;
         }
         public async Task ChangeNoOfSeatsAsync(int id, int noOfSeats)
         {
@@ -71,7 +73,7 @@ namespace FastX.Services
         }
 
         
-        private async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, List<int>seatIds)
+        public async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, List<int>seatIds)
         {
             var newBooking = new Booking
             {
@@ -102,7 +104,7 @@ namespace FastX.Services
 
         }
 
-        private async Task CreateTicket(int bookingId, int seatId, int busId)
+        public async Task CreateTicket(int bookingId, int seatId, int busId)
         {
             var seatPrice = await _seatService.GetSeatPriceAsync(seatId, busId);
             var newTicket = new Ticket
@@ -157,7 +159,7 @@ namespace FastX.Services
             catch (NoSeatsAvailableException ex)
             {
                 _logger.LogError($"No seats available. Error: {ex.Message}");
-                throw;
+                throw; // No need to wrap the exception in another one
             }
             catch (Exception ex)
             {
@@ -256,8 +258,7 @@ namespace FastX.Services
             return completedBookings;
         }
 
-
-            private async Task<Booking> DeleteAsync(int bookingId)
+        public async Task<Booking> DeleteAsync(int bookingId)
         {
             var booking = await _context.Bookings.FindAsync(bookingId);
             if (booking != null)
@@ -346,75 +347,8 @@ namespace FastX.Services
     })
 .Select(task => task.Result) // Wait for each async task to complete
 .ToList();
-            //.Select(b => new CompletedBookingDTO
-            //{
-            //    bookingId = b.BookingId,
-            //    BusName = b?.Bus?.BusName,
-            //    BusType = b?.Bus?.BusType,
-            //    NumberOfSeats = b?.NumberOfSeats ?? 0,
-            //    BookedForWhichDate = b?.BookedForWhichDate,
-            //    Origin = b?.Bus?.BusRoute?.FirstOrDefault()?.Route?.Origin,
-            //    Destination = b?.Bus?.BusRoute?.FirstOrDefault()?.Route?.Destination,
-
-            //    SeatNumbers = b?.Tickets != null ? string.Join(",", b.Tickets.Select(t => t.SeatId)) : ""
-            //}).ToList();
-
-
             return cancelledBookings;
         }
-
-
-//        public async Task<List<CompletedBookingDTO>> GetCancelledBookings()
-//        {
-//            //var users = await _userRepository.GetAsync();
-//            //var user = users.Where(user => user.UserId == userId).ToList();
-//            var users = await _userRepository.GetAsync();
-
-//            if (user == null
-
-//                //|| !user.Any()
-//                )
-//            {
-//                throw new NoSuchUserException();
-//            }
-
-//            var cancelledBookings = user?.Bookings
-//    .Where(b => b.Status == "cancelled")
-//    .Select(async b =>
-//    {
-//        var bus = await GetBookingInfo(b.BookingId, b.BookedForWhichDate);
-//        //var route = await GetRouteInfo(bus.BusId, b.BookedForWhichDate);
-//        return new CompletedBookingDTO
-//        {
-//            BookingId = b.BookingId,
-//            BusName = bus?.BusName,
-//            BusType = bus?.BusType,
-//            NumberOfSeats = b.NumberOfSeats,
-//            BookedForWhichDate = b.BookedForWhichDate,
-//            Origin = bus?.BusRoute?.FirstOrDefault()?.Route?.Origin,
-//            Destination = bus?.BusRoute?.FirstOrDefault()?.Route?.Destination,
-//            SeatNumbers = b.Tickets != null ? string.Join(",", b.Tickets.Select(t => t.SeatId)) : ""
-//        };
-//    })
-//.Select(task => task.Result) // Wait for each async task to complete
-//.ToList();
-//            //.Select(b => new CompletedBookingDTO
-//            //{
-//            //    bookingId = b.BookingId,
-//            //    BusName = b?.Bus?.BusName,
-//            //    BusType = b?.Bus?.BusType,
-//            //    NumberOfSeats = b?.NumberOfSeats ?? 0,
-//            //    BookedForWhichDate = b?.BookedForWhichDate,
-//            //    Origin = b?.Bus?.BusRoute?.FirstOrDefault()?.Route?.Origin,
-//            //    Destination = b?.Bus?.BusRoute?.FirstOrDefault()?.Route?.Destination,
-
-//            //    SeatNumbers = b?.Tickets != null ? string.Join(",", b.Tickets.Select(t => t.SeatId)) : ""
-//            //}).ToList();
-
-
-//            return cancelledBookings;
-//        }
-
 
         public async Task<List<CompletedBookingDTO>> GetPastBookings(int userId)
         {
@@ -452,7 +386,6 @@ namespace FastX.Services
         }
 
 
-        
 
     }
 

@@ -1,5 +1,6 @@
 ﻿using FastX.Exceptions;
 using FastX.Interfaces;
+using FastX.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,15 @@ namespace FastX.Controllers
     {
         private readonly ISeatService _seatService;
         private readonly ILogger<SeatsController> _logger;
+        private readonly IBusService _busService;
 
         public SeatsController(ISeatService seatService,
-            ILogger<SeatsController> logger)
+            ILogger<SeatsController> logger,
+            IBusService busService)
         {
             _seatService = seatService;
             _logger = logger;
+            _busService = busService;
         }
         [HttpGet("GetAvailableSeats")]
         public async Task<IActionResult> GetAvailableSeats(int busId)
@@ -62,6 +66,43 @@ namespace FastX.Controllers
         {
             await _seatService.ChangeSeatAvailabilityForCancelledBookings();
             return Ok();
+        }
+
+
+
+        [HttpGet("totalseats")]
+        public async Task<IActionResult> GetTotalSeats(int busId)
+        {
+            try
+            {
+                int totalSeats = await _busService.GetTotalSeatsAsync(busId);
+                var response = new
+                {
+                    BusId = busId,
+                    TotalSeats = totalSeats,
+                    Message = "Total seats retrieved successfully."
+                };
+
+                return Ok(response);
+            }
+            catch (BusNotFoundException ex)
+            {
+                var errorResponse = new
+                {
+                    Message = $"Bus not found: {ex.Message}"
+                };
+
+                return NotFound(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new
+                {
+                    Message = $"An error occurred: {ex.Message}"
+                };
+
+                return StatusCode(500, errorResponse);
+            }
         }
     }
 }

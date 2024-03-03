@@ -3,7 +3,7 @@
 namespace FastX.Exceptions
 {
     [Serializable]
-    internal class BookingNotFoundException : Exception
+    public class BookingNotFoundException : Exception
     {
         public BookingNotFoundException()
         {

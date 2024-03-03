@@ -16,6 +16,6 @@ namespace FastX.Models
         // public int BusId { get; set; }
         public Bus? Bus { get; set; }
         public bool? IsAvailable { get; set; }
-    }
+    }
 
 }

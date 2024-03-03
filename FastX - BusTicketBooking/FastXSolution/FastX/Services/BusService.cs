@@ -3,6 +3,7 @@ using FastX.Interfaces;
 using FastX.Models;
 using FastX.Models.DTOs;
 using FastX.Repositories;
+using System;
 
 namespace FastX.Services
 {
@@ -12,18 +13,22 @@ namespace FastX.Services
         private readonly IRepository<int, Bus> _busRepository;
         private readonly ILogger<BusService> _logger;
         private IRepository<int, BusOperator> _busOperatorRepository;
+        private ISeatRepository<int, Seat> _seatRepository;
+
 
 
         public BusService(
 
             IRepository<int, Bus> busRepository,
              IRepository<int, BusOperator> busOperatorRepository,
-            ILogger<BusService> logger)
+            ILogger<BusService> logger,
+            ISeatRepository<int, Seat> seatRepository)
         {
 
             _busRepository = busRepository;
             _busOperatorRepository = busOperatorRepository;
             _logger = logger;
+            _seatRepository = seatRepository;
         }
 
         //public async Task<List<BusDto>> SearchBusesAsync(string origin, string destination, DateTime date)
@@ -57,7 +62,7 @@ namespace FastX.Services
         //            Destination = bus.Destination,
         //        }).ToList();
 
-        public async Task<Bus> AddBus(string busName, string busType, int totalSeats, int busOperatorId)
+        public async Task AddBus(string busName, string busType, int totalSeats, int busOperatorId, int seatPrice)
         {
             try
             {
@@ -74,8 +79,24 @@ namespace FastX.Services
                     TotalSeats = totalSeats,
                     BusOperatorId = busOperatorId
                 };
+                await _busRepository.Add(bus);
 
-                return await _busRepository.Add(bus);
+                //int seatNumber = 1;
+                for (int i = 1; i <= totalSeats; i++)
+                {
+                    _logger.LogInformation($"Attempting to Add Seats");
+                    _logger.LogInformation($"Attempting to make booking for BusId: {bus.BusId}, SeatIds:{i}");
+                    var seats = new Seat
+                    {
+                        BusId = bus.BusId,
+                        IsAvailable = true,
+                        SeatId = i,
+                        SeatPrice = seatPrice
+
+                    };
+                    await _seatRepository.Add( seats );
+                }
+                
             }
             catch (Exception ex)
             {
@@ -265,6 +286,18 @@ namespace FastX.Services
             }
             return buses;
         }
+
+        // Updated method to get total seats by bus ID
+        public async Task<int> GetTotalSeatsAsync(int busId)
+        {
+            var bus = await GetBus(busId);
+
+            if (bus != null)
+                return bus.TotalSeats;
+
+            throw new BusNotFoundException();
+        }
+
 
     }
 }

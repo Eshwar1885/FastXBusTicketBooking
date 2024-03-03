@@ -12,6 +12,8 @@ namespace FastX.Interfaces
         //----------------------------
         public Task AddAmenityToBus(int busId, string amenityName);
         public  Task DeleteAmenityFromBus(int busId, string amenityName);
+        public Task AddAmenitiesToBus(int busId, List<string> amenityNames);
+
 
 
     }

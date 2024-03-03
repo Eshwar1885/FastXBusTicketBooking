@@ -3,7 +3,7 @@
 namespace FastX.Exceptions
 {
     [Serializable]
-    internal class AmenityAlreadyExistsException : Exception
+    public class AmenityAlreadyExistsException : Exception
     {
         string message;
         public AmenityAlreadyExistsException()

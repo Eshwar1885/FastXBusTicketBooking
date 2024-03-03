@@ -16,9 +16,11 @@ namespace FastX.Repositories
         {
             _context = context;
         }
-        public Task<Seat> Add(Seat item)
+        public async Task<Seat> Add(Seat item)
         {
-            throw new NotImplementedException();
+            _context.Add(item);
+            _context.SaveChanges();
+            return item;
         }
 
         public Task<Seat> Delete(int key)

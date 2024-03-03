@@ -4,6 +4,10 @@ using FastX.Interfaces;
 using FastX.Models;
 using FastX.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging; // Added namespace for ILogger
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FastX.Services
 {
@@ -11,12 +15,13 @@ namespace FastX.Services
     {
         private readonly IRepository<int, Bus> _busRepository;
         private readonly IAmenityRepository<int, Amenity> _repo;
-        private readonly ILogger<BusService> _logger;
+        private readonly ILogger<AmenityService> _logger;
         private readonly FastXContext _context;
 
+        // Constructor
         public AmenityService(IRepository<int, Bus> busRepository,
             IAmenityRepository<int, Amenity> repo,
-            ILogger<BusService> logger, FastXContext context)
+            ILogger<AmenityService> logger, FastXContext context)
         {
             _busRepository = busRepository;
             _logger = logger;
@@ -24,15 +29,24 @@ namespace FastX.Services
             _repo = repo;
         }
 
-
-
-
+        /// <summary>
+        /// Add a new amenity.
+        /// </summary>
+        /// <param name="amenity">The amenity to add.</param>
+        /// <returns>The added amenity.</returns>
         public async Task<Amenity> AddAmenity(Amenity amenity)
         {
             amenity = await _repo.Add(amenity);
+            _logger.LogInformation("Amenity added successfully.");
             return amenity;
         }
 
+        /// <summary>
+        /// Change the name of an existing amenity.
+        /// </summary>
+        /// <param name="id">The ID of the amenity to change.</param>
+        /// <param name="name">The new name for the amenity.</param>
+        /// <returns>The updated amenity.</returns>
         public async Task<Amenity> ChangeAmenityNameAsync(int id, string name)
         {
             var amenity = await _repo.GetAsync(id);
@@ -40,22 +54,34 @@ namespace FastX.Services
             {
                 amenity.Name = name;
                 amenity = await _repo.Update(amenity);
+                _logger.LogInformation("Amenity name changed successfully.");
                 return amenity;
             }
             throw new AmenitiesNotFoundException();
         }
 
+        /// <summary>
+        /// Delete an amenity by ID.
+        /// </summary>
+        /// <param name="id">The ID of the amenity to delete.</param>
+        /// <returns>The deleted amenity.</returns>
         public async Task<Amenity> DeleteAmenity(int id)
         {
             var amenity = await GetAmenity(id);
             if (amenity != null)
             {
                 amenity = await _repo.Delete(id);
+                _logger.LogInformation("Amenity deleted successfully.");
                 return amenity;
             }
             throw new AmenitiesNotFoundException();
         }
 
+        /// <summary>
+        /// Get an amenity by ID.
+        /// </summary>
+        /// <param name="id">The ID of the amenity to get.</param>
+        /// <returns>The retrieved amenity.</returns>
         public async Task<Amenity> GetAmenity(int id)
         {
             var amenity = await _repo.GetAsync(id);
@@ -66,6 +92,10 @@ namespace FastX.Services
             return amenity;
         }
 
+        /// <summary>
+        /// Get a list of all amenities.
+        /// </summary>
+        /// <returns>A list of amenities.</returns>
         public async Task<List<Amenity>> GetAmenityList()
         {
             var amenity = await _repo.GetAsync();
@@ -75,7 +105,13 @@ namespace FastX.Services
             }
             return amenity;
         }
+
         //--------------------
+        /// <summary>
+        /// Add an amenity to a bus.
+        /// </summary>
+        /// <param name="busId">The ID of the bus.</param>
+        /// <param name="amenityName">The name of the amenity to add.</param>
         public async Task AddAmenityToBus(int busId, string amenityName)
         {
             try
@@ -99,6 +135,7 @@ namespace FastX.Services
                 }
 
                 _repo.AddBusAmenity(new BusAmenity { BusId = busId, AmenityId = amenity.AmenityId });
+                _logger.LogInformation("Amenity added to bus successfully.");
             }
             catch (Exception ex)
             {
@@ -107,9 +144,11 @@ namespace FastX.Services
             }
         }
 
-
-
-
+        /// <summary>
+        /// Delete an amenity from a bus.
+        /// </summary>
+        /// <param name="busId">The ID of the bus.</param>
+        /// <param name="amenityName">The name of the amenity to delete.</param>
         public async Task DeleteAmenityFromBus(int busId, string amenityName)
         {
             try
@@ -132,10 +171,46 @@ namespace FastX.Services
                 }
 
                 _repo.RemoveBusAmenity(busId, amenityName);
+                _logger.LogInformation("Amenity deleted from bus successfully.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while deleting amenity from bus");
+                throw;
+            }
+        }
+
+
+        public async Task AddAmenitiesToBus(int busId, List<string> amenityNames)
+        {
+            try
+            {
+                var bus = await _busRepository.GetAsync(busId);
+                if (bus == null)
+                {
+                    throw new BusNotFoundException();
+                }
+
+                foreach (var amenityName in amenityNames)
+                {
+                    var amenity = _repo.GetByName(amenityName);
+                    if (amenity == null)
+                    {
+                        amenity = new Amenity { Name = amenityName };
+                        _repo.AddAmenity(amenity);
+                    }
+
+                    if (_repo.Exists(busId, amenity.AmenityId))
+                    {
+                        throw new AmenityAlreadyExistsException();
+                    }
+
+                    _repo.AddBusAmenity(new BusAmenity { BusId = busId, AmenityId = amenity.AmenityId });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding amenities to bus");
                 throw;
             }
         }
@@ -195,6 +270,10 @@ namespace FastX.Services
         //        throw new Exception("An error occurred while processing your request.");
         //    }
         //}
+
+
+
+
 
 
     }

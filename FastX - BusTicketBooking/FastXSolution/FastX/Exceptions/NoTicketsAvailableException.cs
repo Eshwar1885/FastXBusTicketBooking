@@ -3,7 +3,7 @@
 namespace FastX.Exceptions
 {
     [Serializable]
-    internal class NoTicketsAvailableException : Exception
+    public class NoTicketsAvailableException : Exception
     {
         public NoTicketsAvailableException()
         {

@@ -68,7 +68,7 @@ namespace FastX.Services
                 {
                     Origin = origin,
                     Destination = destination,
-                    TravelDate = travelDate
+                    //TravelDate = travelDate
                 };
                 await _routeRepository.Add(route);
 
