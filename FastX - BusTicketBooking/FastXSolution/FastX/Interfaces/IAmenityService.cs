@@ -1,4 +1,6 @@
 ﻿using FastX.Models;
+using FastX.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FastX.Interfaces
 {
@@ -13,6 +15,9 @@ namespace FastX.Interfaces
         public Task AddAmenityToBus(int busId, string amenityName);
         public  Task DeleteAmenityFromBus(int busId, string amenityName);
         public Task AddAmenitiesToBus(int busId, List<string> amenityNames);
+        //public Task<List<string>> GetAmenityNamesByBusId(int busId);
+        public Task<List<AmenityDTO>> GetBusAmenitiesAsync(int busId);
+
 
 
 

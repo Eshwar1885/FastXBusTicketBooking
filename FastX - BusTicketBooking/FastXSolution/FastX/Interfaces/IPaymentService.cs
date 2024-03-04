@@ -11,7 +11,7 @@ namespace FastX.Interfaces
         //public Task<float> FindRefundPrice(int userId, int bookingId);
 
         public Task<float> FindRefundPrice(int bookingId);
-        public Task<float> CalculateTotalPriceAsync(Booking booking);
+        //public Task<float> CalculateTotalPriceAsync(Booking booking);
 
 
 

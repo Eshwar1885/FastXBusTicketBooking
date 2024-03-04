@@ -41,41 +41,38 @@ namespace FastXAppTest
                 //_mockPaymentService.Object
             );
         }
-        [Ignore("payment")]
-        [Test]
-        public async Task CreatePayment_Should_Successfully_Create_Payment_For_Existing_Booking()
-        {
-            // Arrange
-            var bookingId = 123;
-            var booking = new Booking { BookingId = bookingId };
-            var totalPrice = 100.0f; // Mock total price
+        ////[Ignore("payment")]
+        //[Test]
+        //public async Task CreatePayment_Should_Successfully_Create_Payment_For_Existing_Booking()
+        //{
+        //    // Arrange
+        //    var bookingId = 123;
+        //    var booking = new Booking { BookingId = bookingId };
+        //    var totalPrice = 100.0f; // Mock total price
 
-            // Mock the result of CalculateTotalPriceAsync
-            _mockPaymentService
-                .Setup(service => service.CalculateTotalPriceAsync(booking))
-                .ReturnsAsync(totalPrice);
+        //    // Mock the CalculateTotalPriceAsync method result
+        //    _mockPaymentService
+        //        .Setup(service => service.CalculateTotalPriceAsync(booking))
+        //        .ReturnsAsync(totalPrice);
 
-            // Setup other mocks
-            _mockBookingRepository.Setup(repo => repo.GetAsync(bookingId)).ReturnsAsync(booking);
-            _mockPaymentRepository.Setup(repo => repo.Add(It.IsAny<Payment>())).ReturnsAsync(new Payment());
-            _mockBookingRepository.Setup(repo => repo.Update(It.IsAny<Booking>())).ReturnsAsync(booking);
+        //    // Setup other mocks
+        //    _mockBookingRepository.Setup(repo => repo.GetAsync(bookingId)).ReturnsAsync(booking);
+        //    _mockPaymentRepository.Setup(repo => repo.Add(It.IsAny<Payment>())).ReturnsAsync(new Payment());
+        //    _mockBookingRepository.Setup(repo => repo.Update(It.IsAny<Booking>())).ReturnsAsync(booking);
 
-            // Act
-            var paymentService = new PaymentService(
-                _mockBookingRepository.Object,
-                _mockPaymentRepository.Object,
-                _mockSeatService.Object,
-                _mockLogger.Object
-            );
-            await paymentService.CreatePayment(bookingId);
+        //    // Act
+        //    await _paymentService.CreatePayment(bookingId);
 
-            // Assert
-            // Verify that the payment repository's Add method is called once
-            _mockPaymentRepository.Verify(repo => repo.Add(It.IsAny<Payment>()), Times.Once);
+        //    // Assert
+        //    // Verify that the payment repository's Add method is called once
+        //    _mockPaymentRepository.Verify(repo => repo.Add(It.IsAny<Payment>()), Times.Once);
 
-            // Verify that the booking repository's Update method is called once
-            //_mockBookingRepository.Verify(repo => repo.Update(booking), Times.Once);
-        }
+        //    // Verify that the booking repository's Update method is called once
+        //    //_mockBookingRepository.Verify(repo => repo.Update(booking), Times.Once);
+        //}
+
+
+
 
 
 

@@ -2,6 +2,7 @@
 using FastX.Interfaces;
 using FastX.Models;
 using FastX.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -117,7 +118,7 @@ namespace FastX.Controllers
             }
         }
 
-
+        //[Authorize(Roles = "user")]
         [HttpGet("upcoming/{userId}")]
         public async Task<ActionResult<List<CompletedBookingDTO>>> GetUpcomingBookings(int userId)
         {

@@ -99,7 +99,7 @@ namespace FastX.Services
             }
         }
         
-        public async Task<float> CalculateTotalPriceAsync(Booking booking)
+        private async Task<float> CalculateTotalPriceAsync(Booking booking)
         {
             try
             {

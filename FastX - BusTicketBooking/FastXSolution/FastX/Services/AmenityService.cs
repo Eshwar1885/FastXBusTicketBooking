@@ -216,60 +216,78 @@ namespace FastX.Services
         }
 
 
-        //public async Task<List<AmenityDto>> GetBusAmenitiesAsync(int busId)
+
+        //public async Task<List<string>> GetAmenityNamesByBusId(int busId)
         //{
-        //    try
+        //    var bus = await _busRepository.GetAsync(busId);
+
+        //    if (bus != null)
         //    {
-        //        _logger.LogInformation($"Fetching amenities for Bus ID: {busId}");
+        //        var amenityNames = bus.BusAmenities
+        //            .Select(ba => ba.Amenity.Name)
+        //            .ToList();
 
-        //        // Call the repository method to retrieve the bus by ID
-        //        //var bus = await _busRepository.GetAsync(busId);
-        //        var bus = await _context.Buses
-        //    .Include(b => b.BusAmenities)
-        //    .ThenInclude(ba => ba.Amenity)
-        //    .FirstOrDefaultAsync(b => b.BusId == busId);
-
-        //        if (bus == null)
-        //        {
-        //            _logger.LogWarning($"Bus not found for ID: {busId}");
-        //            throw new BusNotFoundException();
-        //        }
-
-        //        // Access the bus's amenities and select AmenityId and Name
-        //        //    var amenities = bus.BusAmenities
-        //        //.Select(ba => ba.Amenity)
-        //        //.ToList();
-        //        var amenities = bus.BusAmenities
-        //        .Select(ba => new AmenityDto
-        //        {
-        //            AmenityId = ba.Amenity.AmenityId,
-        //            Name = ba.Amenity.Name
-        //        })
-        //        .ToList();
-
-
-        //        if (amenities == null || !amenities.Any())
-        //        {
-        //            _logger.LogWarning($"No amenities found for Bus ID: {busId}");
-        //            throw new AmenitiesNotFoundException();
-        //        }
-
-        //        _logger.LogInformation($"Amenities fetched successfully for Bus ID: {busId}");
-
-        //        return amenities;
+        //        return amenityNames;
         //    }
-        //    catch (BusNotFoundException)
-        //    {
-        //        // Rethrow the exception if the bus is not found
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception for debugging purposes
-        //        _logger.LogError($"An error occurred: {ex}");
-        //        throw new Exception("An error occurred while processing your request.");
-        //    }
+
+        //    throw new BusNotFoundException();
         //}
+
+
+        public async Task<List<AmenityDTO>> GetBusAmenitiesAsync(int busId)
+        {
+            try
+            {
+                _logger.LogInformation($"Fetching amenities for Bus ID: {busId}");
+
+                // Call the repository method to retrieve the bus by ID
+                //var bus = await _busRepository.GetAsync(busId);
+                var bus = await _context.Buses
+            .Include(b => b.BusAmenities)
+            .ThenInclude(ba => ba.Amenity)
+            .FirstOrDefaultAsync(b => b.BusId == busId);
+
+                if (bus == null)
+                {
+                    _logger.LogWarning($"Bus not found for ID: {busId}");
+                    throw new BusNotFoundException();
+                }
+
+                // Access the bus's amenities and select AmenityId and Name
+                //    var amenities = bus.BusAmenities
+                //.Select(ba => ba.Amenity)
+                //.ToList();
+                var amenities = bus.BusAmenities
+                .Select(ba => new AmenityDTO
+                {
+                    AmenityId = ba.Amenity.AmenityId,
+                    Name = ba.Amenity.Name
+                })
+                .ToList();
+
+
+                if (amenities == null || !amenities.Any())
+                {
+                    _logger.LogWarning($"No amenities found for Bus ID: {busId}");
+                    throw new AmenitiesNotFoundException();
+                }
+
+                _logger.LogInformation($"Amenities fetched successfully for Bus ID: {busId}");
+
+                return amenities;
+            }
+            catch (BusNotFoundException)
+            {
+                // Rethrow the exception if the bus is not found
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                _logger.LogError($"An error occurred: {ex}");
+                throw new Exception("An error occurred while processing your request.");
+            }
+        }
 
 
 

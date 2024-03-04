@@ -91,24 +91,7 @@ namespace FastX.Tests.Services
             Assert.AreEqual(tickets, result);
         }
 
-        //[Test]
-        //public async Task GetTicketsForUser_Should_Return_Tickets_For_User()
-        //{
-        //    // Arrange
-        //    int userId = 1;
-        //    var tickets = new List<Ticket>
-        //    {
-        //        new Ticket { Booking = new Booking { UserId = userId } }
-        //    };
-        //    _mockTicketRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(tickets);
-        //    _mockBusRepository.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(new Bus());
-
-        //    // Act
-        //    var result = await _ticketService.GetTicketsForUser(userId);
-
-        //    // Assert
-        //    Assert.AreEqual(1, result.Count);
-        //}
+        
 
         [Test]
         public async Task GetTicketsForUser_Should_Throw_NoTicketsAvailableException_If_No_Tickets_Found()
@@ -122,22 +105,69 @@ namespace FastX.Tests.Services
             Assert.ThrowsAsync<NoTicketsAvailableException>(() => _ticketService.GetTicketsForUser(userId));
         }
 
+        
+
+
         //[Test]
-        //public async Task DeleteCancelledBookingTickets_Should_Delete_Cancelled_Booking_Tickets()
+        //public async Task GetTicketsForUser_Should_Return_Tickets_For_User()
         //{
-        //    // Arrange
-        //    int bookingId = 1;
+        //    Arrange
         //    int userId = 1;
-        //    var booking = new Booking { BookingId = bookingId, UserId = userId, Status = "refunded", Tickets = new List<Ticket> { new Ticket { TicketId = 1 } } };
-        //    _mockBookingRepository.Setup(repo => repo.GetAsync(bookingId)).ReturnsAsync(booking);
-        //    await _mockTicketRepository.Setup(repo => repo.Delete(It.IsAny<int>())).Returns(Task.CompletedTask);
+        //    var tickets = new List<Ticket>
+        //    {
+        //        new Ticket { Booking = new Booking { UserId = userId } }
+        //    };
+        //    _mockTicketRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(tickets);
+        //    _mockBusRepository.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(new Bus());
 
-        //    // Act
-        //    await _ticketService.DeleteCancelledBookingTickets(bookingId, userId);
+        //    Act
+        //   var result = await _ticketService.GetTicketsForUser(userId);
 
-        //    // Assert
-        //    _mockTicketRepository.Verify(repo => repo.Delete(It.IsAny<int>()), Times.Once);
+        //    Assert
+        //    Assert.AreEqual(0, result.Count);
         //}
+
+
+
+
+
+
+
+        [Test]
+        public async Task GetTicketsForUser_Should_Return_Tickets_For_User()
+        {
+            // Arrange
+            int userId = 1;
+            var tickets = new List<Ticket>
+            {
+                new Ticket { Booking = new Booking { UserId = userId } }
+            };
+            _mockTicketRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(tickets);
+            _mockBusRepository.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(new Bus());
+
+            // Act
+            var result = await _ticketService.GetTicketsForUser(userId);
+
+            // Assert
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public async Task DeleteCancelledBookingTickets_Should_Delete_Cancelled_Booking_Tickets()
+        {
+            // Arrange
+            int bookingId = 1;
+            int userId = 1;
+            var booking = new Booking { BookingId = bookingId, UserId = userId, Status = "refunded", Tickets = new List<Ticket> { new Ticket { TicketId = 1 } } };
+            _mockBookingRepository.Setup(repo => repo.GetAsync(bookingId)).ReturnsAsync(booking);
+            //await _mockTicketRepository.Setup(repo => repo.Delete(It.IsAny<int>())).Returns(Task.CompletedTask);
+
+            // Act
+            await _ticketService.DeleteCancelledBookingTickets(bookingId, userId);
+
+            // Assert
+            _mockTicketRepository.Verify(repo => repo.Delete(It.IsAny<int>()), Times.Once);
+        }
 
         [Test]
         public async Task DeleteCancelledBookingTickets_Should_Not_Delete_Tickets_If_Booking_Not_Cancelled()
@@ -154,7 +184,5 @@ namespace FastX.Tests.Services
             // Assert
             _mockTicketRepository.Verify(repo => repo.Delete(It.IsAny<int>()), Times.Never);
         }
-
-        
     }
 }

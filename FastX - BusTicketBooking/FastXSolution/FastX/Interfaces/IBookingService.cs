@@ -9,7 +9,7 @@ namespace FastX.Interfaces
         public Task<Booking> MakeBooking(int busId, List<int>seatIds, DateTime travelDate, int userId, int totalSeats);
         public Task<List<CompletedBookingDTO>> GetCompletedBookings(int userId);
         public Task<List<CompletedBookingDTO>> GetUpcomingBookings(int userId);
-        public Task<List<CompletedBookingDTO>> GetPastBookings(int userId);
+        public Task<List<CompletedBookingDTO>> GetPastBookings(int userId); 
         public Task UpdateOngoingBookingsAndResetSeats();
         public Task<List<Booking>> GetBookingList();
         public Task<Booking> CancelBooking(int userId, int bookingId);

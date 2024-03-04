@@ -213,8 +213,8 @@ namespace FastX.Services
             //var user = users.Where(user => user.UserId == userId).ToList();
             var user = await _userRepository.GetAsync(userId);
 
-            if (user == null 
-           
+            if (user == null
+
                 //|| !user.Any()
                 )
             {
@@ -230,6 +230,7 @@ namespace FastX.Services
                 return new CompletedBookingDTO
                 {
                     BookingId = b.BookingId,
+                    Status = b.Status,
                     BusName = bus?.BusName,
                     BusType = bus?.BusType,
                     NumberOfSeats = b.NumberOfSeats,
@@ -308,7 +309,7 @@ namespace FastX.Services
             var upcomingBookings = completedBookings
                 .Where(b => b.BookedForWhichDate > today)
                 .ToList();
-
+            
             return upcomingBookings;
         }
 

@@ -62,7 +62,7 @@ namespace FastX.Services
         //            Destination = bus.Destination,
         //        }).ToList();
 
-        public async Task AddBus(string busName, string busType, int totalSeats, int busOperatorId, int seatPrice)
+        public async Task<Bus> AddBus(string busName, string busType, int totalSeats, int busOperatorId, int seatPrice)
         {
             try
             {
@@ -96,7 +96,9 @@ namespace FastX.Services
                     };
                     await _seatRepository.Add( seats );
                 }
-                
+                return bus;
+
+
             }
             catch (Exception ex)
             {

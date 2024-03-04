@@ -87,7 +87,8 @@ namespace FastX.Repositories
         public async Task<Bus> GetAsync(int key)
         {
             var buses = await GetAsync();
-            var bus = await _context.Buses
+            var bus = await _context.Buses.Include(b => b.BusAmenities)
+                .ThenInclude(ba => ba.Amenity)
         .Include(b => b.Seats)
         .FirstOrDefaultAsync(e => e.BusId == key);
 

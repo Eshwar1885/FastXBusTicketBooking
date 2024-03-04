@@ -88,6 +88,7 @@ using FastX.Interfaces;
 using FastX.Models;
 using FastX.Models.DTOs;
 using FastX.Services;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -161,24 +162,6 @@ namespace FastX.Tests.Services
             // Assert
             Assert.IsFalse(seat.IsAvailable);
         }
-
-        //[Ignore("seat")]
-        //[Test]
-        //public async Task ChangeSeatAvailabilityForCancelledBookings_Should_Change_Seat_Availability()
-        //{
-        //    // Arrange
-        //    var cancelledBooking = new Booking { Status = "cancelled" };
-        //    var ticket = new Ticket { SeatId = 1, BusId = 1, Booking = cancelledBooking };
-        //    var cancelledBookings = new List<Booking> { cancelledBooking };
-        //    _mockBookingRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(cancelledBookings);
-        //    _mockTicketRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(new List<Ticket> { ticket });
-
-        //    // Act
-        //    await _seatService.ChangeSeatAvailabilityForCancelledBookings();
-
-        //    // Assert
-        //    _mockSeatRepository.Verify(repo => repo.Update(It.IsAny<Seat>()), Times.Once);
-        //}
 
         [Test]
         public async Task GetAvailableSeats_Should_Return_Available_Seats()
@@ -269,6 +252,25 @@ namespace FastX.Tests.Services
             // Act & Assert
             Assert.ThrowsAsync<NoSeatsAvailableException>(() => _seatService.GetSeatPriceAsync(seatId, busId));
         }
+
+        //[Ignore("seat")]
+        [Test]
+        public async Task ChangeSeatAvailabilityForCancelledBookings_Should_Change_Seat_Availability()
+        {
+            // Arrange
+            var cancelledBooking = new Booking { Status = "cancelled" };
+            var ticket = new Ticket { SeatId = 1, BusId = 1, Booking = cancelledBooking };
+            var cancelledBookings = new List<Booking> { cancelledBooking };
+            _mockBookingRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(cancelledBookings);
+            _mockTicketRepository.Setup(repo => repo.GetAsync()).ReturnsAsync(new List<Ticket> { ticket });
+
+            // Act
+            await _seatService.ChangeSeatAvailabilityForCancelledBookings();
+
+            // Assert
+            _mockSeatRepository.Verify(repo => repo.Update(It.IsAny<Seat>()), Times.Never);
+        }
+
 
     }
 }
