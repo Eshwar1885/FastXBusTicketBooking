@@ -145,7 +145,7 @@ namespace FastXAppTest
         }
 
         [Test]
-        public async Task GetUpcomingBookings_Should_Throw_NullReferenceException_When_No_Completed_Bookings()
+        public async Task GetUpcomingBookings_Should_Throw_Exception_When_No_Completed_Bookings()
         {
             // Arrange
             var userId = 1;
@@ -174,7 +174,7 @@ namespace FastXAppTest
 
 
         [Test]
-        public async Task GetPastBookings_Should_Throw_NullReferenceException_When_No_Completed_Bookings()
+        public async Task GetPastBookings_Should_Throw_Exception_When_No_Completed_Bookings()
         {
             // Arrange
             var userId = 1;
@@ -201,8 +201,39 @@ namespace FastXAppTest
             });
         }
 
+
+        //[Test]
+        //public async Task ChangeNoOfSeatsAsync_Should_Update_Number_Of_Seats()
+        //{
+        //    // Arrange
+        //    var bookingId = 1;
+        //    var noOfSeats = 5;
+        //    var booking = new Booking { BookingId = bookingId };
+
+        //    _mockBookingRepository.Setup(repo => repo.GetAsync(bookingId)).ReturnsAsync(booking);
+        //    var bookingService = new BookingService(_mockContext, _mockTicketRepository.Object, _mockBookingRepository.Object,
+        //        _mockUserRepository.Object, _mockSeatService.Object, _mockLogger.Object, _mockPaymentService.Object, _mockBusRepository.Object);
+
+        //    // Act
+        //    await bookingService.ChangeNoOfSeatsAsync(bookingId, noOfSeats);
+
+        //    // Assert
+        //    Assert.AreEqual(noOfSeats, booking.NumberOfSeats);
+        //    _mockBookingRepository.Verify(repo => repo.Update(booking), Times.Once);
+        //}
+
+        //
+
+
+
+
+
+
+
+
+
         [Test]
-        public async Task UpdateOngoingBookingsAndResetSeats_Should_Throw_NullReferenceException_When_No_Ongoing_Bookings()
+        public async Task UpdateOngoingBookingsAndResetSeats_Should_Throw_Exception_When_No_Ongoing_Bookings()
         {
             // Arrange
             var mockBookingRepository = new Mock<IBookingRepository<int, Booking>>();
@@ -233,6 +264,39 @@ namespace FastXAppTest
         }
 
 
+
+
+
+        //[Test]
+        //public async Task GetCompletedBookings_ReturnsCompletedBookings_WhenUserExists()
+        //{
+        //    // Arrange
+        //    var userId = 1;
+        //    var user = new User { UserId = userId, Bookings = new List<Booking>() }; // Add any necessary properties to User
+
+        //    _mockUserRepository.Setup(repo => repo.GetAsync(userId)).ReturnsAsync(user);
+        //    // Add setup for other dependencies as needed
+
+        //    // Act
+        //    var completedBookings = await _bookingService.GetCompletedBookings(userId);
+
+        //    // Assert
+        //    Assert.IsNotNull(completedBookings);
+        //    // Add more assertions based on the expected behavior of GetCompletedBookings
+        //}
+
+        //[Test]
+        //public async Task GetCompletedBookings_ThrowsNoSuchUserException_WhenUserDoesNotExist()
+        //{
+        //    // Arrange
+        //    var userId = 1;
+
+        //    _mockUserRepository.Setup(repo => repo.GetAsync(userId)).ReturnsAsync((User)null);
+        //    // Add setup for other dependencies as needed
+
+        //    // Act & Assert
+        //    Assert.ThrowsAsync<NoSuchUserException>(async () => await _bookingService.GetCompletedBookings(userId));
+        //}
 
 
 

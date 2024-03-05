@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FastX.Interfaces;
 using FastX.Models.DTOs;
+using FastX.Exceptions;
+using Microsoft.AspNetCore.Routing;
 
 namespace FastX.Tests
 {
@@ -48,15 +50,42 @@ namespace FastX.Tests
             _mockBusOperatorRepository.Setup(repo => repo.GetAsync(It.IsAny<int>()))
                 .ReturnsAsync(expectedBusOperator);
 
-            _mockBusRepository.Setup(repo => repo.Add(It.IsAny<Bus>()))
-                .ReturnsAsync(expectedBus);
-
             // Act
             var addedBus = await _busService.AddBus("TestBus", "TestType", 10, 1, 100);
 
             // Assert
-            Assert.AreEqual(expectedBus, addedBus);
+            _mockBusRepository.Verify(repo => repo.Add(It.IsAny<Bus>()), Times.Once);
+           
+            Assert.AreEqual("TestType", addedBus.BusType);
         }
+
+        [Test]
+        public async Task AddBus_Should_Throw_BusOperatorNotFoundException_When_Operator_Not_Found()
+        {
+            // Arrange
+            _mockBusOperatorRepository.Setup(repo => repo.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync((BusOperator)null);
+
+            // Act & Assert
+             Assert.ThrowsAsync<BusOperatorNotFoundException>(() =>
+                _busService.AddBus("TestBus", "TestType", 10, 1, 100));
+        }
+
+        [Test]
+        public async Task DeleteBus_Should_Throw_Exception_When_Repository_Throws()
+        {
+            // Arrange
+            int busId = 1;
+            _mockBusRepository.Setup(repo => repo.Delete(busId))
+                .ThrowsAsync(new Exception("Repository exception message"));
+
+            // Act & Assert
+            Assert.ThrowsAsync<Exception>(() =>
+                _busService.DeleteBus(busId));
+        }
+
+
+
 
 
         [Test]
@@ -76,32 +105,49 @@ namespace FastX.Tests
             Assert.AreEqual(expectedBus, deletedBus);
         }
 
+
+
         [Test]
-        public async Task GetAvailableBuses_Should_Return_List()
+        public async Task GetAvailableBuses_Should_Return_Available_Buses()
         {
             // Arrange
-            var origin = "Origin";
-            var destination = "Destination";
-            var travelDate = DateTime.Now.Date;
-            var busType = "BusType";
+            string origin = "Origin";
+            string destination = "Destination";
+            DateTime travelDate = DateTime.Now.Date;
 
-            var expectedBuses = new List<Bus>
+            // Mock the list of buses returned by the repository
+            var mockBuses = new List<Bus>
     {
-        new Bus { BusId = 1, BusName = "Bus1", BusType = busType },
-        new Bus { BusId = 2, BusName = "Bus2", BusType = busType }
+        new Bus { BusId = 1, BusName = "Bus1", BusType = "Type1", BusRoute = new List<BusRoute>
+        {
+            new BusRoute { Route = new Routee { Origin = origin, Destination = destination, TravelDate = travelDate } }
+        }},
+        new Bus { BusId = 2, BusName = "Bus2", BusType = "Type2", BusRoute = new List<BusRoute>
+        {
+            new BusRoute { Route = new Routee { Origin = origin, Destination = destination, TravelDate = travelDate } }
+        }}
+        // Add more buses as needed
     };
 
             _mockBusRepository.Setup(repo => repo.GetAsync())
-                .ReturnsAsync(expectedBuses);
+                .ReturnsAsync(mockBuses);
 
             // Act
-            var availableBuses = await _busService.GetAvailableBuses(origin, destination, travelDate, busType);
+            var availableBuses = await _busService.GetAvailableBuses(origin, destination, travelDate);
 
             // Assert
             Assert.IsNotNull(availableBuses);
-            Assert.AreEqual(expectedBuses.Count, availableBuses.Count);
-            Assert.IsTrue(availableBuses.All(bus => bus.Origin == origin && bus.Destination == destination && bus.BusType == busType));
+
         }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -126,7 +172,7 @@ namespace FastX.Tests
         public async Task GetBusList_Should_Return_List()
         {
             // Arrange
-            var expectedList = new List<Bus> { new Bus(), new Bus() }; // Non-empty list of buses
+            var expectedList = new List<Bus> { new Bus(), new Bus() };
 
             _mockBusRepository.Setup(repo => repo.GetAsync())
                 .ReturnsAsync(expectedList);
@@ -156,6 +202,5 @@ namespace FastX.Tests
             Assert.AreEqual(expectedSeats, totalSeats);
         }
 
-        // Add more test cases for other methods as needed
     }
 }

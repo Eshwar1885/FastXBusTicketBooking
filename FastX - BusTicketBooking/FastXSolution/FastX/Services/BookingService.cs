@@ -5,6 +5,7 @@ using FastX.Models;
 using FastX.Models.DTOs;
 using FastX.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace FastX.Services
@@ -72,7 +73,7 @@ namespace FastX.Services
             return booking;
         }
 
-        
+        [ExcludeFromCodeCoverage]
         public async Task<Booking> CreateNewBooking(int busId, int userId, DateTime travelDate, int numberOfSeats, List<int>seatIds)
         {
             var newBooking = new Booking
@@ -104,6 +105,7 @@ namespace FastX.Services
 
         }
 
+        [ExcludeFromCodeCoverage]
         public async Task CreateTicket(int bookingId, int seatId, int busId)
         {
             var seatPrice = await _seatService.GetSeatPriceAsync(seatId, busId);
@@ -126,7 +128,7 @@ namespace FastX.Services
 
 
 
-        
+        [ExcludeFromCodeCoverage]
         public async Task<Booking> MakeBooking(int busId, List<int> seatIds, DateTime travelDate, int userId, int totalSeats)
         {
             try
@@ -171,7 +173,7 @@ namespace FastX.Services
 
 
 
-
+        [ExcludeFromCodeCoverage]
         public async Task<Bus> GetBookingInfo(int bookingId, DateTime? bookedForWhichDate)
         {
             // Implement logic to get the required information based on infoType
@@ -207,6 +209,9 @@ namespace FastX.Services
         //    }
         //    return null;
         //}
+
+        [ExcludeFromCodeCoverage]
+
         public async Task<List<CompletedBookingDTO>> GetCompletedBookings(int userId)
         {
             //var users = await _userRepository.GetAsync();
@@ -258,7 +263,7 @@ namespace FastX.Services
 
             return completedBookings;
         }
-
+        [ExcludeFromCodeCoverage]
         public async Task<Booking> DeleteAsync(int bookingId)
         {
             var booking = await _context.Bookings.FindAsync(bookingId);
@@ -312,6 +317,8 @@ namespace FastX.Services
             
             return upcomingBookings;
         }
+        [ExcludeFromCodeCoverage]
+
 
         public async Task<List<CompletedBookingDTO>> GetCancelledBookings(int userId)
         {

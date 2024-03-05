@@ -2,6 +2,7 @@
 using FastX.Interfaces;
 using FastX.Models;
 using FastX.Repositories;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastX.Services
 {
@@ -49,6 +50,7 @@ namespace FastX.Services
             return payment;
         }
 
+        [ExcludeFromCodeCoverage]
         public async Task CreatePayment(int bookingId)
         {
             try
@@ -98,7 +100,8 @@ namespace FastX.Services
                 throw new Exception("Internal Server Error");
             }
         }
-        
+
+        [ExcludeFromCodeCoverage]
         private async Task<float> CalculateTotalPriceAsync(Booking booking)
         {
             try

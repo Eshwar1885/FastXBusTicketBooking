@@ -41,7 +41,9 @@ namespace FastXAppTest
                 //_mockPaymentService.Object
             );
         }
-        ////[Ignore("payment")]
+
+
+        //[Ignore("payment")]
         //[Test]
         //public async Task CreatePayment_Should_Successfully_Create_Payment_For_Existing_Booking()
         //{
@@ -51,9 +53,9 @@ namespace FastXAppTest
         //    var totalPrice = 100.0f; // Mock total price
 
         //    // Mock the CalculateTotalPriceAsync method result
-        //    _mockPaymentService
-        //        .Setup(service => service.CalculateTotalPriceAsync(booking))
-        //        .ReturnsAsync(totalPrice);
+        //    //_mockPaymentService
+        //    //    .Setup(service => service.CalculateTotalPriceAsync(booking))
+        //    //    .ReturnsAsync(totalPrice);
 
         //    // Setup other mocks
         //    _mockBookingRepository.Setup(repo => repo.GetAsync(bookingId)).ReturnsAsync(booking);

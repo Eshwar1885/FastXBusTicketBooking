@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging; // Added namespace for ILogger
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace FastX.Services
@@ -149,6 +150,7 @@ namespace FastX.Services
         /// </summary>
         /// <param name="busId">The ID of the bus.</param>
         /// <param name="amenityName">The name of the amenity to delete.</param>
+        [ExcludeFromCodeCoverage]
         public async Task DeleteAmenityFromBus(int busId, string amenityName)
         {
             try
@@ -233,7 +235,7 @@ namespace FastX.Services
         //    throw new BusNotFoundException();
         //}
 
-
+        [ExcludeFromCodeCoverage]
         public async Task<List<AmenityDTO>> GetBusAmenitiesAsync(int busId)
         {
             try

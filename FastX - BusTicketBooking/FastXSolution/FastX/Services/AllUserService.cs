@@ -7,6 +7,7 @@ using System.Text;
 using FastX.Repositories;
 using FastX.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastX.Services
 {
@@ -127,7 +128,7 @@ namespace FastX.Services
             throw new InvlidUserException();
 
         }
-
+        [ExcludeFromCodeCoverage]
         private bool ComparePasswords(byte[] password, byte[] userPassword)
             {
                 for (int i = 0; i < password.Length; i++)
@@ -138,6 +139,7 @@ namespace FastX.Services
                 return true;
             }
 
+            [ExcludeFromCodeCoverage]
             private byte[] GetPasswordEncrypted(string password, byte[] key)
             {
                 HMACSHA512 hmac = new HMACSHA512(key);

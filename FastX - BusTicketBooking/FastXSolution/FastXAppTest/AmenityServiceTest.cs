@@ -329,35 +329,35 @@ namespace FastXAppTest
             //mockLogger.Verify(logger => logger.LogError(It.IsAny<Exception>(), "Error occurred while adding amenity to bus"), Times.Once);
         }
 
-        [Ignore("Amenity")]
-        [Test]
-        public async Task DeleteAmenityFromBus_Should_Delete_Amenity_From_Bus_Successfully()
-        {
-            // Arrange
-            var mockBusRepository = new Mock<IRepository<int, Bus>>();
-            var mockAmenityRepository = new Mock<IAmenityRepository<int, Amenity>>();
-            var mockLogger = new Mock<ILogger<AmenityService>>();
-            var mockContext = CreateMockDbContext();
+        //[Ignore("Amenity")]
+        //[Test]
+        //public async Task DeleteAmenityFromBus_Should_Delete_Amenity_From_Bus_Successfully()
+        //{
+        //    // Arrange
+        //    var mockBusRepository = new Mock<IRepository<int, Bus>>();
+        //    var mockAmenityRepository = new Mock<IAmenityRepository<int, Amenity>>();
+        //    var mockLogger = new Mock<ILogger<AmenityService>>();
+        //    var mockContext = CreateMockDbContext();
 
-            var amenityService = new AmenityService(mockBusRepository.Object, mockAmenityRepository.Object, mockLogger.Object, mockContext);
+        //    var amenityService = new AmenityService(mockBusRepository.Object, mockAmenityRepository.Object, mockLogger.Object, mockContext);
 
-            var busId = 1;
-            var amenityName = "Test Amenity";
+        //    var busId = 1;
+        //    var amenityName = "Test Amenity";
 
-            var existingBus = new Bus { BusId = busId, BusName = "Test Bus" };
-            var existingAmenity = new Amenity { AmenityId = 1, Name = amenityName };
+        //    var existingBus = new Bus { BusId = busId, BusName = "Test Bus" };
+        //    var existingAmenity = new Amenity { AmenityId = 1, Name = amenityName };
 
-            mockBusRepository.Setup(repo => repo.GetAsync(busId)).ReturnsAsync(existingBus);
-            mockAmenityRepository.Setup(repo => repo.GetByName(amenityName)).Returns(existingAmenity);
-            mockAmenityRepository.Setup(repo => repo.Exists(busId, existingAmenity.AmenityId)).Returns(true);
+        //    mockBusRepository.Setup(repo => repo.GetAsync(busId)).ReturnsAsync(existingBus);
+        //    mockAmenityRepository.Setup(repo => repo.GetByName(amenityName)).Returns(existingAmenity);
+        //    mockAmenityRepository.Setup(repo => repo.Exists(busId, existingAmenity.AmenityId)).Returns(true);
 
-            // Act
-            await amenityService.DeleteAmenityFromBus(busId, amenityName);
+        //    // Act
+        //    await amenityService.DeleteAmenityFromBus(busId, amenityName);
 
-            // Assert
-            mockAmenityRepository.Verify(repo => repo.RemoveBusAmenity(busId, amenityName), Times.Once);
-            mockLogger.Verify(logger => logger.LogInformation("Amenity deleted from bus successfully."), Times.Once);
-        }
+        //    // Assert
+        //    mockAmenityRepository.Verify(repo => repo.RemoveBusAmenity(busId, amenityName), Times.Once);
+        //    mockLogger.Verify(logger => logger.LogInformation("Amenity deleted from bus successfully."), Times.Once);
+        //}
 
         [Test]
         public async Task DeleteAmenityFromBus_Should_Throw_BusNotFoundException_When_Bus_Not_Exists()

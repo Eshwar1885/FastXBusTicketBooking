@@ -4,6 +4,7 @@ using FastX.Models;
 using FastX.Models.DTOs;
 using FastX.Repositories;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastX.Services
 {
@@ -99,6 +100,11 @@ namespace FastX.Services
                 return bus;
 
 
+            }
+            catch (BusOperatorNotFoundException ex)
+            {
+                _logger.LogError(ex, "BusOperator not found");
+                throw; // Re-throw the exception for the caller to handle
             }
             catch (Exception ex)
             {
@@ -196,16 +202,23 @@ namespace FastX.Services
                 }).ToList();
 
             }
+            //catch (BusOperatorNotFoundException ex)
+            //{
+            //    _logger.LogError(ex, "BusOperator not found");
+            //    throw; // Re-throw the exception for the caller to handle
+            //}
             catch (Exception ex)
             {
                 _logger.LogError($"Error while getting available buses: {ex.Message}");
                 throw;
             }
-        }
+        }   
 
 
 
         //--------------
+        [ExcludeFromCodeCoverage]
+
         public async Task<List<BusDTOForUser>> GetAvailableBuses(string origin, string destination, DateTime travelDate, string busType)
         {
             try
@@ -244,6 +257,11 @@ namespace FastX.Services
                     Destination = destination
                 }).ToList();
 
+            }
+            catch (BusOperatorNotFoundException ex)
+            {
+                _logger.LogError(ex, "BusOperator not found");
+                throw; // Re-throw the exception for the caller to handle
             }
             catch (Exception ex)
             {

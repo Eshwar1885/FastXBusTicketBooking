@@ -24,7 +24,7 @@ namespace FastX.Controllers
             _logger = logger;
         }
 
-        //[Authorize(Roles = "busoperator")]
+        [Authorize(Roles = "busoperator")]
         [HttpPost("AddBusByBusOperator")]
         public async Task<ActionResult<Bus>> AddBus([FromBody]AddBusAndSeatsDTO bus)
         {
