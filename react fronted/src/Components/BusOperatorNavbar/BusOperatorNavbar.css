@@ -1,0 +1,55 @@
+/* 
+  @media (max-width: 768px) {
+    .navbar.bg-dark .navbar-brand,
+    .navbar.bg-dark .navbar-toggler-icon {
+      color: rgb(255, 255, 255) !important;
+    }
+  } */
+
+/* Navbar.css */
+.navbar.bg-dark {
+  background-color: rgba(103, 58, 183) !important; /* Blue background color */
+}
+
+.navbar a.navbar-brand,
+.navbar a.nav-link,
+.navbar button.nav-link {
+  color: #fff !important; /* White text color */
+}
+
+.navbar .navbar-nav .nav-link {
+  font-weight: bold; /* Bold font weight for all links */
+}
+
+.logout-btn {
+  color: #fff !important; /* White text color */
+  background-color: #007bff; /* Blue background color */
+  border: none; /* Remove border */
+  font-weight: bold; /* Bold font weight */
+  cursor: pointer; /* Add pointer cursor */
+  padding: 10px 20px; /* Add padding */
+  outline: none; /* Remove outline */
+  border-radius: 5px; /* Add border radius */
+}
+
+/* Navbar.css */
+
+/* Add a hover effect to all navbar links */
+.navbar a.navbar-brand:hover,
+.navbar a.nav-link:hover,
+.navbar button.nav-link:hover {
+  color: #ffc107 !important; /* Change text color on hover */
+}
+
+/* Add a hover effect to specific links */
+.navbar .navbar-nav .nav-item.booking-history a.nav-link:hover,
+.navbar .navbar-nav .nav-item.fast a.nav-link:hover,
+.navbar .navbar-nav .nav-item.login a.nav-link:hover {
+  color: #ffc107 !important; /* Change text color on hover */
+}
+
+/* Add a hover effect to the logout button */
+.logout-btn:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
+

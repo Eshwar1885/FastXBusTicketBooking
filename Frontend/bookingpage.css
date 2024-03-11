@@ -1,0 +1,108 @@
+.booking-form {
+    width: 500px;
+    margin: 0 auto;
+    background: #ffffff;
+  }
+  
+  div.elem-group {
+    margin: 20px 0;
+  }
+  
+  /* div.elem-group.inlined {
+    width: 49%;
+    display: inline-block;
+    float: left;
+    margin-left: 1%;
+  } */
+  
+  label {
+    display: block;
+    font-family: 'Cambria';
+    padding-bottom: 10px;
+    font-size: 1.25em;
+  }
+  
+  input, select, textarea {
+    border-radius: 2px;
+    border: 2px solid #777;
+    box-sizing: border-box;
+    font-size: 1.25em;
+    font-family: 'Cambria';
+    width: 100%;
+    padding: 10px;
+  }
+  
+  div.elem-group.inlined input {
+    width: 95%;
+    display: inline-block;
+  }
+  
+  textarea {
+    height: 150px;
+  }
+  
+  hr {
+    border: 1px dotted #da5757;
+  }
+  
+  button {
+    height: 50px;
+    background: rgb(197, 190, 176);
+    border: none;
+    color: white;
+    font-size: 1.25em;
+    font-family: 'Cambria';
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0 12px;
+  }
+  
+  button:hover {
+    background: #484efa;
+  }
+
+
+  
+@media screen and (max-width: 600px) {
+    body {
+        width: 100%;
+    }
+    input[type='text'] {
+        width: 100%;
+    }
+}
+
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 5px;
+  background-color: #ebdfdf;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgb(205, 61, 61);
+}
+
+
+/* bookingpage.css */
+
+.container {
+  margin-bottom: 0; /* Remove margin bottom */
+}
+
+.elem-group {
+  margin-top: 0; /* Remove margin top */
+}
+
+
+
+/* bookingpage.css */
+
+ul {
+  margin: 0; /* Remove default margin for ul */
+  padding: 0; /* Remove default padding for ul */
+}
+
+ul img {
+  display: block; /* Ensure the image behaves as a block element */
+  margin: 10 auto; /* Center the image horizontally */
+}
+

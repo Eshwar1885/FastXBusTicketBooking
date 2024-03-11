@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="home.css">
+        <script src="https://kit.fontawesome.com/49ef994d02.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>@import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);</style>
+        <title>FastX!</title>
+  </head>
+  <body>
+    <!-- header  -->
+    <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="#">Logo</a>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="bookinghistory.html">Booking History</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="userprofile.html">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="login.html">Login/Signup</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- carousel -->
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="2000">
+      <!-- ... (carousel content) ... -->
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/bg7.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item ">
+          <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/bg4.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/bg3.jpg" class="d-block w-100" alt="...">
+        </div>
+    </div>
+
+    <!-- Search form -->
+    <div class="fromAndTo">
+      <!-- ... (search form content) ... -->
+      <div class="a">
+                
+        <div class="ikHMPa">
+            <!-- from -->
+            <div>
+                <div class="outerContainer">
+                    <div role="button" class="btnStyle">
+                        <div width="270px" height="112px" class="iconStyle">
+                            <!-- some source icon -->
+                            <i class=""></i>
+                            <div class="outerinputStyle">
+                                <div class="inputStyle">
+                                    <input id="src" type="text" placeholder="Source" class="inputStyleA" value="">
+                                    <label for="src" >From</label>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+         
+            </div>  
+            </div>
+            <!-- double arrow icon -->
+            <div class="jVMfHp">
+                <i class="fa-solid fa-arrows-left-right newStyle"></i>
+            </div>
+            <!-- to -->
+            <div class="outerContainer">
+                <div role="button"class="btnStyle">
+                    <div width="270px" height="112px" class="destIcon">
+                        <!-- dest icon -->
+                        <i class="destIconStyle icon icon-dest"></i>
+                        <div class="outerinputStyle">
+                            <div class="sc-htoDjs inputStyle">
+                                <input  id="dest" type="text"  placeholder="Dest" class="inputStyleA" value="">
+                                <label for="dest" >To</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                       
+            </div>
+
+         
+            <input type="date" class="c">
+  
+            <div class="CalendarContainer">
+           
+            </div>
+            <button id="search_button" class="busBtn">SEARCH BUSES</button>
+
+            
+
+           
+        </div>
+        
+
+    </div>
+    </div>
+
+    <!-- Trending Offers Section -->
+    <div class="trending-offers">
+      <h2 class="text-center mt-5 mb-4">Trending Offers</h2>
+      <div class="container">
+        <div class="row">
+          <!-- Trending Offer Card 1 -->
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="offer1.jpg" class="card-img-top" alt="Trending Offer 1">
+              <div class="card-body">
+                <h5 class="card-title">Special Discount</h5>
+                <p class="card-text">Get 20% off on your next booking. Limited time offer!</p>
+                <a href="#" class="btn btn-primary">View Offer</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trending Offer Card 2 -->
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="offer2.jpg" class="card-img-top" alt="Trending Offer 2">
+              <div class="card-body">
+                <h5 class="card-title">Weekend Getaway</h5>
+                <p class="card-text">Plan your weekend escape with our exclusive deals.</p>
+                <a href="#" class="btn btn-primary">View Offer</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trending Offer Card 3 -->
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="offer3.jpg" class="card-img-top" alt="Trending Offer 3">
+              <div class="card-body">
+                <h5 class="card-title">Family Package</h5>
+                <p class="card-text">Book for the whole family and save big on your journey.</p>
+                <a href="#" class="btn btn-primary">View Offer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+      document.getElementById("search_button").onclick = function () {
+        location.href = "buses.html";
+      };
+    </script>
+  </body>
+</html>

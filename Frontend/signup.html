@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://images.ctfassets.net/nutlwuf1v0oy/CHozoWVfMLuaEDws4Hqi2/29d06c83b4df1ff9c736259cc8dc295c/home-banner.e085cf784a2737ee155a1ebbeb6615e8.jpg?fm=jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      transform: scale(1);
+      transition: transform 0.3s ease-in-out;
+      color: #ffffff;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 18px; /* Adjusted font size */
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .login-link {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .login-link a {
+     
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+      
+    }
+
+    .welcome-text {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+
+ 
+<div class="welcome-text"><h2>Welcome to the sign-up page</h2></div>
+
+<div class="container">
+  <h2>Signup</h2>
+  <form action="#" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender" required>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+
+    <label for="contact">Contact Number:</label>
+    <input type="tel" id="contact" name="contact" pattern="[0-9]{10}" required>
+    <small>Format: 10-digit number</small>
+
+    <label for="address">Address:</label>
+    <textarea id="address" name="address" rows="4" required></textarea>
+<br>
+<br>
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <div class="login-link">
+    <p>Already a user? <a href="login.html">Login here</a></p>
+  </div>
+</div>
+
+</body>
+</html>
